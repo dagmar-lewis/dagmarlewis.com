@@ -1,0 +1,9 @@
+services:
+  Portfolio:
+    container_name: portfolio
+    image: portfolio:3
+    expose:
+      - 3000
+    ports:
+      - 127.0.0.1:3000:3000
+    restart: unless-stopped

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://dagmarlewis.com</id>
+    <title>Blogs</title>
+    <updated>2025-06-14T17:47:28.508Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://dagmarlewis.com"/>
+    <link rel="self" href="https://dagmarlewis.com/atom.xml"/>
+    <subtitle>Hey! I am RDS (Rudro Dip Sarker), and its my personal blog where I share my learnings, experiences, and thoughts on different topics. I mostly talk about tech, but I don't have any specific niche.  I write about whatever I find interesting. I hope you will find my blogs helpful. Happy reading!</subtitle>
+    <logo>https://dagmarlewis.com/logo.png</logo>
+    <icon>https://dagmarlewis.com/favicon.png</icon>
+    <rights>All rights reserved 2025, Dagmar Lewis</rights>
+    <entry>
+        <title type="html"><![CDATA[I modded the Buildspace OS]]></title>
+        <id>https://dagmarlewis.com/blogs/buildspace-os-mod</id>
+        <link href="https://dagmarlewis.com/blogs/buildspace-os-mod"/>
+        <updated>2024-06-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[A journey of me modding the buildspace os chrome extension to customize the look]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[On scroll video playback effect]]></title>
+        <id>https://dagmarlewis.com/blogs/on-scroll-playback</id>
+        <link href="https://dagmarlewis.com/blogs/on-scroll-playback"/>
+        <updated>2024-06-17T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Let's create an on scroll video playback effect using ffmpeg, framer-motion & nextjs]]></summary>
+    </entry>
+</feed>
