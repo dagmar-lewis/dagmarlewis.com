@@ -22,6 +22,9 @@ RUN bun run build
 
 FROM base AS runner
 WORKDIR /usr/src/app
+RUN apk update
+RUN apk add caddy nss-tools bash --no-cache
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -32,10 +35,15 @@ COPY --from=builder --chown=bun:bun /usr/src/app/.next/standalone ./
 
 COPY --from=builder --chown=bun:bun /usr/src/app/.next/static ./.next/static
 COPY --from=builder --chown=bun:bun /usr/src/app/public ./public
+COPY --from=builder --chown=bun:bun /usr/src/app/run.sh run.sh
+COPY --from=builder --chown=bun:bun /usr/src/app/Caddyfile Caddyfile
 
 USER bun
-EXPOSE 2015
+
+RUN chmod u+x run.sh
+
+EXPOSE 443
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-CMD ["bun", "server.js" ]
+CMD ["./run.sh"]
