@@ -1,7 +1,7 @@
 services:
   Portfolio:
     container_name: portfolio
-    image: portfolio:4
+    image: portfolio
     expose:
       - 3000
     ports:

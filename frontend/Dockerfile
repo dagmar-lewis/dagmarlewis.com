@@ -34,7 +34,7 @@ COPY --from=builder --chown=bun:bun /usr/src/app/.next/static ./.next/static
 COPY --from=builder --chown=bun:bun /usr/src/app/public ./public
 
 USER bun
-EXPOSE 2015
+EXPOSE 3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
