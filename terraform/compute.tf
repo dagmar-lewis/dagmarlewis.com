@@ -1,23 +1,21 @@
 resource "aws_instance" "instance" {
-  ami             = "ami-0c46db45b631d4cf5"
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.private_subnet.id
-  security_groups = ["${aws_security_group.allow_cloudfront_managed.id}"]
-  user_data       = <<-EOF
-                  #!/bin/bash
-                  sudo yum update -y
-                  sudo yum install git -y
-                  sudo yum -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-                  sudo service docker start
-                  systemctl enable docker
-                  git clone https://github.com/dagmar-lewis/dagmarlewis.com.git
-                  cd dagmarlewis.com
-                  cd frontend
-                  sudo docker build -t portfolio -f Dockerfile .
-                  sudo docker-compose up -d
-                  docker run -p 3000:3000 portfolio:5
-                  EOF
+  ami                  = "ami-0c46db45b631d4cf5" #wordpress "ami-0c46db45b631d4cf5" aws linux"ami-05ffe3c48a9991133"
+  instance_type        = "t2.micro"
+  subnet_id            = aws_subnet.private_subnet.id
+  security_groups      = [aws_security_group.allow_cloudfront_managed.id, aws_security_group.endpoint-sg.id, aws_security_group.egress_endpoint_sg]
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  
+  # user_data       = <<-EOF
+  #                 #!/bin/bash
+  #                 sudo yum install -y docker
+  #                 sudo service docker start
+  #                 sudo docker run -d -p 8080:80 --name it-tools -it corentinth/it-tools
+
+  #                 EOF
   tags = {
     Name = "dagmarlewis_portfolio"
   }
 }
+
+
+

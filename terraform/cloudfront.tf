@@ -1,8 +1,8 @@
 # resource "aws_cloudfront_vpc_origin" "ec2e" {
 #   vpc_origin_endpoint_config {
-#     name                   = portfolio
+#     name                   = "portfolio"
 #     arn                    = aws_instance.instance.arn
-#     http_port              = 80
+#     http_port              = 3000
 #     https_port             = 443
 #     origin_protocol_policy = "http"
 
@@ -20,7 +20,7 @@
 #     origin_id   = aws_cloudfront_vpc_origin.ec2e.id
 
 #     custom_origin_config {
-#       http_port              = 80
+#       http_port              = 3000
 #       https_port             = 443
 #       origin_protocol_policy = "http-only"
 #       origin_ssl_protocols   = ["TLSv1.2"]

@@ -2,6 +2,7 @@ resource "aws_vpc" "main_vpc" {
   cidr_block                       = "10.0.0.0/16"
   assign_generated_ipv6_cidr_block = true
   enable_dns_hostnames             = true
+  enable_dns_support               = true
   tags = {
     Name = "dagmarlewis_portfolio"
   }
@@ -20,8 +21,14 @@ resource "aws_subnet" "private_subnet" {
   }
 }
 
+resource "aws_internet_gateway" "internet_gateway" {
+  vpc_id = aws_vpc.main_vpc.id
 
-resource "aws_egress_only_internet_gateway" "gw" {
+  tags = {
+    Name = "main"
+  }
+}
+resource "aws_egress_only_internet_gateway" "main" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
@@ -43,9 +50,9 @@ resource "aws_route_table_association" "private_route_table_association" {
 }
 
 resource "aws_route" "private_subnet_ipv6_route" {
-  route_table_id = aws_route_table.private_route_table.id
+  route_table_id              = aws_route_table.private_route_table.id
   destination_ipv6_cidr_block = "::/0"
-  egress_only_gateway_id = aws_egress_only_internet_gateway.gw.id
+  egress_only_gateway_id      = aws_egress_only_internet_gateway.main.id
 }
 
 data "aws_ec2_managed_prefix_list" "cloudfront" {
@@ -64,12 +71,6 @@ resource "aws_security_group" "allow_cloudfront_managed" {
     prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
   }
 
-  ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-  }
-
   # ingress {
   #   from_port   = 443
   #   to_port     = 443
@@ -77,17 +78,73 @@ resource "aws_security_group" "allow_cloudfront_managed" {
   #   prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
   # }
 
-  egress {
+  
+}
+
+resource "aws_security_group" "egress_endpoint_sg" {
+  name        = "Allow egress endpoint"
+  description = "Allow traffic from egress endpoint"
+  vpc_id      = aws_vpc.main_vpc.id
+
+egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 }
 
-resource "aws_ec2_instance_connect_endpoint" "example" {
-  subnet_id = aws_subnet.private_subnet.id
+resource "aws_security_group" "endpoint-sg" {
+  name        = "endpoint_access"
+  description = "allow inbound traffic"
+  vpc_id      = aws_vpc.main_vpc.id
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
+    description = "Enable access for the endpoints."
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
+  }
+  tags = {
+    "Name" = "endpoint"
+  }
 }
 
 
-# sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+resource "aws_vpc_endpoint" "ssm" {
+vpc_id = aws_vpc.main_vpc.id
+service_name = "com.amazonaws.us-east-1.ssm"
+vpc_endpoint_type = "Interface"
+subnet_ids = [aws_subnet.private_subnet.id]
+security_group_ids= [aws_security_group.endpoint-sg.id]
+private_dns_enabled = true
+tags = {
+
+}
+}
+resource "aws_vpc_endpoint" "ec2messages" {
+vpc_id = aws_vpc.main_vpc.id
+service_name = "com.amazonaws.us-east-1.ec2messages"
+vpc_endpoint_type = "Interface"
+subnet_ids = [aws_subnet.private_subnet.id]
+security_group_ids = [aws_security_group.endpoint-sg.id]
+private_dns_enabled = true
+tags = {
+"Name" = "app-1-ec2messages"
+}
+}
+resource "aws_vpc_endpoint" "messages" {
+vpc_id = aws_vpc.main_vpc.id
+service_name = "com.amazonaws.us-east-1.ssmmessages"
+vpc_endpoint_type = "Interface"
+subnet_ids = [aws_subnet.private_subnet.id]
+security_group_ids = [aws_security_group.endpoint-sg.id]
+private_dns_enabled = true
+}
