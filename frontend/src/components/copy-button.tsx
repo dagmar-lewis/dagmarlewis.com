@@ -19,17 +19,51 @@ export const CopyButton = ({ children }: { children: React.ReactNode }) => {
     if (typeof node === "string") {
       return node;
     }
+  
+    // Handle null, undefined, and boolean nodes, which render nothing.
+    if (node === null || typeof node === "boolean" || typeof node === "undefined") {
+      return "";
+    }
+  
     if (Array.isArray(node)) {
       return node.map(extractSourceCode).join("");
     }
+  
     if (React.isValidElement(node)) {
-      const { type, props } = node;
-      const children = React.Children.map(props.children, extractSourceCode)?.join("");
+      const { type, props } = node as React.ReactElement<any>;
+      // Determine the tag name from the element's type.
+      const tagName = typeof type === "string" ? type : type.name || "Component";
+  
+      // Recursively get the string representation of the children.
+      const children = React.Children.map(
+        props.children,
+        extractSourceCode
+      )?.join("");
+  
+      // Build the props string, making sure to exclude children.
       const propPairs = Object.entries(props)
-        .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
+        .filter(([key]) => key !== "children")
+        .map(([key, value]) => {
+          // Handle string props with quotes, which is standard for JSX.
+          if (typeof value === "string") {
+            return `${key}="${value}"`;
+          }
+          // For other types, wrap in curly braces.
+          // Note: This is a simplification. Functions and complex objects won't serialize to valid, runnable JSX.
+          return `${key}={${JSON.stringify(value)}}`;
+        })
         .join(" ");
-      return `${children}`;
+  
+      const propsString = propPairs ? ` ${propPairs}` : "";
+  
+      // Handle self-closing tags for elements without children.
+      if (!children) {
+        return `<${tagName}${propsString} />`;
+      }
+  
+      return `<${tagName}${propsString}>${children}</${tagName}>`;
     }
+  
     return "";
   };
 

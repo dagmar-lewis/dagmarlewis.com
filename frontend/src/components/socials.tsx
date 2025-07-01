@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { IconMap } from "./icon-map";
 import { portfolioConfig } from "@/config/portfolio.config";
-import { ScheduleCallPopup, ScheduleCallFloat } from "./cal";
+// import { ScheduleCallPopup, ScheduleCallFloat } from "./cal";
 
 export const Socials = () => {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <ScheduleCallPopup />
-      <ScheduleCallFloat />
+      {/* <ScheduleCallPopup />
+      <ScheduleCallFloat /> */}
       <Button
         variant="outline"
         className="active:border-b active:scale-[0.97] hover:border-b-4 hover:border-primary/30 hover:bg-background shadow-none transition-all duration-100"

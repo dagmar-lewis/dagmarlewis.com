@@ -11,25 +11,17 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/config/site.config";
 
 type BlogPageParams = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 function getBlogFromParam(params: { slug: string }) {
-  const slug = params.slug;
-  const blog = blogs.find((blog) => blog.slugAsParams === slug);
-
-  if (!blog) {
-    null;
-  }
-  return blog;
+  return blogs.find((blog) => blog.slugAsParams === params.slug);
 }
 
-export async function generateMetadata({
-  params,
-}: BlogPageParams): Promise<Metadata> {
-  const blog = getBlogFromParam(params);
+export async function generateMetadata(props: BlogPageParams): Promise<Metadata> {
+  const blog = getBlogFromParam((await props.params));
 
   if (!blog) {
     return {};
@@ -68,15 +60,15 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams(): Promise<
-  BlogPageParams["params"][]
+  Awaited<BlogPageParams["params"]>[]
 > {
   return blogs.map((blog) => ({
     slug: blog.slugAsParams,
   }));
 }
 
-export default async function BlogPost({ params }: BlogPageParams) {
-  const blog = getBlogFromParam(params);
+export default async function BlogPost(props: BlogPageParams) {
+  const blog = getBlogFromParam((await props.params));
   if (!blog) {
     notFound();
   }
