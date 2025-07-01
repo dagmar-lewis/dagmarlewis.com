@@ -27,9 +27,15 @@ jobs:
 
             # Initialize terraform
             - name: Initialize Terraform
-              run: terraform init
+              run: | 
+                cd terraform
+                terraform fmt
+                terraform init
 
             # Execute the terraform plan
             - name: Terraform Plan
-              run: terraform plan
+              run: |
+                cd terraform
+                terraform fmt
+                terraform plan
 
