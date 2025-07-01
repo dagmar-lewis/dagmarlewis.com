@@ -9,8 +9,8 @@ resource "aws_instance" "instance" {
                   #!/bin/bash
                   sudo yum install -y docker
                   sudo service docker start
-                  sudo docker pull dagmarl/portfolio:amd64
-                  sudo docker run -p 3000:3000 dagmarl/portfolio:amd64
+                  sudo docker pull dagmarl/portfolio:latest
+                  sudo docker run -p 3000:80 dagmarl/portfolio:latest
 
                   EOF
   tags = {
