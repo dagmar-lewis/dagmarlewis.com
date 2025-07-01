@@ -1,11 +1,10 @@
 terraform {
-  # backend "s3" {
-  #   bucket = "dagmarlewis.com-tf-state"
-  #   key = "dagmarlewis.com-terraform.tfstate"
-  #   region = "us-east-1"
-  #   dynamodb_table = "dagmarlewis.com-tf-state-locking"
-  #   encrypt = true
-  # }
+  backend "s3" {
+    bucket = "dagmarlewis.com-tf-state"
+    key = "dagmarlewis.com-terraform.tfstate"
+    region = "us-east-1"
+    encrypt = true
+  }
 
   required_providers {
     aws = {
