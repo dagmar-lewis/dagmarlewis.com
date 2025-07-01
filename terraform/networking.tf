@@ -78,7 +78,7 @@ resource "aws_security_group" "allow_cloudfront_managed" {
   #   prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
   # }
 
-  
+
 }
 
 resource "aws_security_group" "egress_endpoint_sg" {
@@ -86,10 +86,10 @@ resource "aws_security_group" "egress_endpoint_sg" {
   description = "Allow traffic from egress endpoint"
   vpc_id      = aws_vpc.main_vpc.id
 
-egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
     ipv6_cidr_blocks = ["::/0"]
   }
 }
@@ -119,32 +119,33 @@ resource "aws_security_group" "endpoint-sg" {
 
 
 resource "aws_vpc_endpoint" "ssm" {
-vpc_id = aws_vpc.main_vpc.id
-service_name = "com.amazonaws.us-east-1.ssm"
-vpc_endpoint_type = "Interface"
-subnet_ids = [aws_subnet.private_subnet.id]
-security_group_ids= [aws_security_group.endpoint-sg.id]
-private_dns_enabled = true
-tags = {
+  vpc_id              = aws_vpc.main_vpc.id
+  service_name        = "com.amazonaws.us-east-1.ssm"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [aws_subnet.private_subnet.id]
+  security_group_ids  = [aws_security_group.endpoint-sg.id]
+  private_dns_enabled = true
+  tags = {
 
-}
+  }
 }
 resource "aws_vpc_endpoint" "ec2messages" {
-vpc_id = aws_vpc.main_vpc.id
-service_name = "com.amazonaws.us-east-1.ec2messages"
-vpc_endpoint_type = "Interface"
-subnet_ids = [aws_subnet.private_subnet.id]
-security_group_ids = [aws_security_group.endpoint-sg.id]
-private_dns_enabled = true
-tags = {
-"Name" = "app-1-ec2messages"
-}
+  vpc_id              = aws_vpc.main_vpc.id
+  service_name        = "com.amazonaws.us-east-1.ec2messages"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [aws_subnet.private_subnet.id]
+  security_group_ids  = [aws_security_group.endpoint-sg.id]
+  private_dns_enabled = true
+  tags = {
+    "Name" = "app-1-ec2messages"
+  }
 }
 resource "aws_vpc_endpoint" "messages" {
-vpc_id = aws_vpc.main_vpc.id
-service_name = "com.amazonaws.us-east-1.ssmmessages"
-vpc_endpoint_type = "Interface"
-subnet_ids = [aws_subnet.private_subnet.id]
-security_group_ids = [aws_security_group.endpoint-sg.id]
-private_dns_enabled = true
+  vpc_id              = aws_vpc.main_vpc.id
+  service_name        = "com.amazonaws.us-east-1.ssmmessages"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = [aws_subnet.private_subnet.id]
+  security_group_ids  = [aws_security_group.endpoint-sg.id]
+  private_dns_enabled = true
 }
+
