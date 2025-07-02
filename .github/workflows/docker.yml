@@ -30,12 +30,12 @@ jobs:
             - name: Change dir to frontend
               run: cd frontend
 
-            - name: Build and push Landing Page Docker image
+            - name: Build and push portfolio Docker image
               uses: docker/build-push-action@v6
               with:
                 context: ./frontend
                 file: ./frontend/Dockerfile
-                platforms: linux/amd64,linux/arm64
+                platforms: linux/amd64
                 push: true
                 tags: dagmarl/portfolio:latest
               
