@@ -1,4 +1,4 @@
-name: Terrafrom
+name: Terrafrom Plan
 
 on:
     workflow_dispatch:

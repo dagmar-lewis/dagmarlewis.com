@@ -1,4 +1,4 @@
-name: Terrafrom
+name: Terrafrom Destroy
 
 on:
     workflow_dispatch:

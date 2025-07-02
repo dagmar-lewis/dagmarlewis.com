@@ -1,4 +1,4 @@
-name: Terrafrom
+name: Terrafrom Apply
 
 on:
     workflow_dispatch:
