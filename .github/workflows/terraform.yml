@@ -13,11 +13,11 @@ jobs:
             - name: Chekout code
               uses: actions/checkout@v4
 
-            # Installs Terraform on GitHub runner
+            
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v3
 
-            # Configures your AWS access by using the credentials stored in GitHub Secrets
+            
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4.2.1
               with:
@@ -25,14 +25,14 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: "us-east-1"
 
-            # Initialize terraform
+            
             - name: Initialize Terraform
               run: | 
                 cd terraform
                 terraform fmt
                 terraform init
 
-            # Execute the terraform plan
+            
             - name: Terraform Plan
               run: |
                 cd terraform
