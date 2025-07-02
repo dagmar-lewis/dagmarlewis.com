@@ -2,10 +2,7 @@ name: Terrafrom Destroy
 
 on:
     workflow_dispatch:
-    push:
-        branches: [main]
-        paths: ['terraform/**']
-
+      
 jobs:
     plan:
         runs-on: ubuntu-latest
