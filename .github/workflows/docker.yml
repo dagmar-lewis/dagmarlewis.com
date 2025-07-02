@@ -26,9 +26,6 @@ jobs:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_PASSWORD }}
 
-            - name: Change dir to frontend
-              run: cd frontend
-
             - name: Build and push portfolio Docker image
               uses: docker/build-push-action@v6
               with:
