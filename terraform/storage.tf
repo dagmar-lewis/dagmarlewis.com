@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "dagmarlewis.com-tf-state"
-
 }
 
 resource "aws_s3_bucket_versioning" "terraform_bucket_versioning" {

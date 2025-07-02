@@ -2,9 +2,9 @@ name: Terrafrom Destroy
 
 on:
     workflow_dispatch:
-      
+
 jobs:
-    plan:
+    destroy:
         runs-on: ubuntu-latest
         steps:
             - name: Chekout code
