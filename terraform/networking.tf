@@ -112,11 +112,24 @@ resource "aws_security_group" "endpoint-sg" {
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.main_vpc.cidr_block]
   }
+
+
   tags = {
     "Name" = "endpoint"
   }
 }
 
+resource "aws_security_group" "s3_endpoint" {
+  name        = "s3_gateway_access"
+  description = "allow outbound traffic"
+  vpc_id      = aws_vpc.main_vpc.id
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
 resource "aws_vpc_endpoint" "ssm" {
   vpc_id              = aws_vpc.main_vpc.id
@@ -149,3 +162,9 @@ resource "aws_vpc_endpoint" "messages" {
   private_dns_enabled = true
 }
 
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id              = aws_vpc.main_vpc.id
+  service_name        = "com.amazonaws.us-east-1.s3"
+  vpc_endpoint_type   = "Gateway"
+  route_table_ids = [aws_route_table.private_route_table.id]
+}

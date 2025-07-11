@@ -1,9 +1,30 @@
+networks:
+  proxy-network:
+    external: true
 services:
   Portfolio:
     container_name: portfolio
-    image: portfolio
-    expose:
-      - 3000
+    image: dagmarl/portfolio:latest
     ports:
-      - 127.0.0.1:3000:3000
+      - "3000:3000"
     restart: unless-stopped
+
+    networks:
+      - proxy-network
+
+
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data:/data
+      - ./config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+
+    restart: unless-stopped
+
+    networks:
+      - proxy-network

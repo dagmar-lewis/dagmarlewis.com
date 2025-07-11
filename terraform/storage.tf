@@ -17,3 +17,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_c
     }
   }
 }
+
+resource "aws_s3_bucket" "ec2-files" {
+  bucket = "${var.files_bucket_name}"
+}
