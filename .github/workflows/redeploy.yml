@@ -24,5 +24,4 @@ jobs:
                   --comment "Deploy Laravel App" \
                   --instance-ids "i-01d1868d2d9f92b0f" \
                   --region "us-east-1" \
-                  --parameters 'commands=["sudo su - ubuntu cd caddy touch dark", 
-                    ]' \
+                  --parameters 'commands=["sudo su - ubuntu","cd caddy","touch test"]' \
