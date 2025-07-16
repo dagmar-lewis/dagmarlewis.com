@@ -22,6 +22,6 @@ jobs:
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
                   --comment "Deploy Laravel App" \
-                  --instance-ids "i-01d1868d2d9f92b0f" \
+                  --instance-ids "i-0a3b2f0781c7919fd" \
                   --region "us-east-1" \
-                  --parameters 'commands=["sudo su - ubuntu","cd caddy","touch test"]' \
+                  --parameters 'commands=["cd caddy","touch test"]' \

@@ -7,7 +7,6 @@ resource "aws_instance" "instance" {
 
   user_data       = <<-EOF
                   #!/bin/bash
-                  sudo su - ubuntu
                   sudo apt-get update
                   sudo apt upgrade -y
                   sudo usermod -a -G docker 
