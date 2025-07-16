@@ -24,4 +24,4 @@ jobs:
                   --comment "Deploy Laravel App" \
                   --instance-ids "i-0b20d4192b7f109d1" \
                   --region "us-east-1" \
-                  --parameters "[\"sudo su - ubuntu -c 'touch test4'\"]" \
+                  --parameters "["sudo su - ubuntu -c 'touch test4'"]" \
