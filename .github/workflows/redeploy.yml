@@ -21,7 +21,7 @@ jobs:
               run: |
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
-                  --comment "Redeploy script" \
-                  --instance-ids "i-0b20d4192b7f109d1" \
+                  --comment "Deploy Laravel App" \
+                  --instance-ids "i-0a3b2f0781c7919fd" \
                   --region "us-east-1" \
-                  --parameters 'commands=["sudo su - ubuntu -c 'touch test2'"]' \
+                  --parameters "[\"sudo su - ubuntu -c 'touch test4'\"]" \
