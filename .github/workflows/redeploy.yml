@@ -24,4 +24,4 @@ jobs:
                   --comment "Redeploy script" \
                   --instance-ids "i-0b20d4192b7f109d1" \
                   --region "us-east-1" \
-                  --parameters 'commands=[\"sudo su - ubuntu -c 'touch test'\"]' \
+                  --parameters 'commands=[\"sudo su - ubuntu -c 'touch test'"]' \
