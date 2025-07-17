@@ -1,5 +1,9 @@
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "dagmarlewis.com-tf-state"
+
+  tags = {
+    Name = "${var.project_name}-tf-state"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "terraform_bucket_versioning" {
@@ -20,4 +24,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_c
 
 resource "aws_s3_bucket" "ec2-files" {
   bucket = "${var.files_bucket_name}"
+
+  tags = {
+    Name = "${var.project_name}-ec2-files"
+  }
 }

@@ -1,6 +1,6 @@
 # resource "aws_cloudfront_vpc_origin" "ec2e" {
 #   vpc_origin_endpoint_config {
-#     name                   = "portfolio"
+#     name                   = var.project_name
 #     arn                    = aws_instance.instance.arn
 #     http_port              = 80
 #     https_port             = 443
@@ -15,7 +15,7 @@
 
 
 # resource "aws_cloudfront_distribution" "vpc_origin_distribution" {
-#   enabled          = true
+#   enabled          = var.cloudfront_distrubution_state
 #   retain_on_delete = false
 
 #   origin {
