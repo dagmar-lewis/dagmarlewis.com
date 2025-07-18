@@ -25,7 +25,8 @@ jobs:
                   --instance-ids "i-0f52a3c1a47b50063" \
                   --region "us-east-1" \
                   --parameters commands="\"
-                  sudo su - ubuntu -c 'touch4' 
+                  sudo su - ubuntu -c 'cd caddy' 
+                  sudo su - ubuntu -c 'touch myfiles'
                   \"" \
 
 
