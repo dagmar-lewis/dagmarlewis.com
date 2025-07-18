@@ -3,6 +3,7 @@ resource "aws_vpc" "main_vpc" {
   assign_generated_ipv6_cidr_block = true
   enable_dns_hostnames             = true
   enable_dns_support               = true
+  
   tags = {
     Name = "${var.project_name}_vpc"
   }
@@ -16,6 +17,7 @@ resource "aws_subnet" "private_subnet" {
   ipv6_cidr_block                 = cidrsubnet(aws_vpc.main_vpc.ipv6_cidr_block, 8, 1)
   assign_ipv6_address_on_creation = true
   availability_zone               = "${var.region}a"
+  
   tags = {
     Name = "${var.project_name}_subnet"
   }
@@ -140,6 +142,21 @@ resource "aws_security_group" "s3_endpoint" {
 
   tags = {
     Name = "${var.project_name}_s3_endpoint"
+  }
+}
+resource "aws_security_group" "ecr_endpoint" {
+  name        = "Ecr endpoint access"
+  description = "allow outbound traffic"
+  vpc_id      = aws_vpc.main_vpc.id
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.project_name}_ecr_endpoint"
   }
 }
 
