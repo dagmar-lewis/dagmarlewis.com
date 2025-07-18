@@ -2,13 +2,19 @@ name: Redeploy
 
 on:
     workflow_dispatch:
-
+env:
+  ec2_output: $(terraform output )
 jobs:
     redeploy:
         runs-on: ubuntu-latest
         steps:
             - name: Chekout code
               uses: actions/checkout@v4
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+              with: 
+                terraform_wrapper: false
 
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4.2.1
@@ -22,7 +28,7 @@ jobs:
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
                   --comment "Deploy Laravel App" \
-                  --instance-ids "i-0f52a3c1a47b50063" \
+                  --instance-ids "${{env.ec2_output}}" \
                   --region "us-east-1" \
                   --parameters commands="\"
                   sudo su - ubuntu -c 'cd caddy' 
