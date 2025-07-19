@@ -3,7 +3,7 @@ name: Redeploy
 on:
     workflow_dispatch:
 env:
-  ec2_output: $(terraform output )
+  ec2_output: $(terraform output ec2id)
 jobs:
     redeploy:
         runs-on: ubuntu-latest
@@ -27,11 +27,10 @@ jobs:
               run: |
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
-                  --comment "Deploy Laravel App" \
+                  --comment "Redeploy Nextjs app" \
                   --instance-ids "${{env.ec2_output}}" \
                   --region "us-east-1" \
-                  --parameters commands="\"
-                  sudo su - ubuntu -c 'cd caddy' 
+                  --parameters commands="\" 
                   sudo su - ubuntu -c 'touch myfiles'
                   \"" \
 
