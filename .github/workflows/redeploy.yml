@@ -29,7 +29,7 @@ jobs:
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
                   --comment "Redeploy Nextjs app" \
-                  --instance-ids "${{ secrets.EC2_ID }}"\
+                  --instance-ids "${{ secrets.EC2_ID }}" \
                   --region "us-east-1" \
                   --parameters commands="\" 
                   sudo su - ubuntu -c 'touch myfiles'
