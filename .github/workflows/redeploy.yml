@@ -2,7 +2,8 @@ name: Redeploy
 
 on:
     workflow_dispatch:
-
+env:
+  ec2: $(terraform output ec2id)
 jobs:
     redeploy:
         runs-on: ubuntu-latest
@@ -12,8 +13,7 @@ jobs:
 
             - name: Set up Terraform
               uses: hashicorp/setup-terraform@v3
-              with: 
-                terraform_wrapper: false
+              
 
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4.2.1
@@ -30,7 +30,7 @@ jobs:
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
                   --comment "Redeploy Nextjs app" \
-                  --instance-ids ${{secrets.EC2_ID}} \
+                  --instance-ids ${{env.ec2}} \
                   --region "us-east-1" \
                   --parameters commands="\" 
                   sudo su - ubuntu -c 'touch myfiles'
