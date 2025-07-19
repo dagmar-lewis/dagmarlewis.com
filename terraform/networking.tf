@@ -3,7 +3,7 @@ resource "aws_vpc" "main_vpc" {
   assign_generated_ipv6_cidr_block = true
   enable_dns_hostnames             = true
   enable_dns_support               = true
-  
+
   tags = {
     Name = "${var.project_name}_vpc"
   }
@@ -17,7 +17,7 @@ resource "aws_subnet" "private_subnet" {
   ipv6_cidr_block                 = cidrsubnet(aws_vpc.main_vpc.ipv6_cidr_block, 8, 1)
   assign_ipv6_address_on_creation = true
   availability_zone               = "${var.region}a"
-  
+
   tags = {
     Name = "${var.project_name}_subnet"
   }
@@ -50,14 +50,14 @@ resource "aws_route_table_association" "private_route_table_association" {
   subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.private_route_table.id
 
-  
+
 }
 
 resource "aws_route" "private_subnet_ipv6_route" {
   route_table_id              = aws_route_table.private_route_table.id
   destination_ipv6_cidr_block = "::/0"
   egress_only_gateway_id      = aws_egress_only_internet_gateway.main.id
-  
+
 }
 
 
@@ -167,7 +167,7 @@ resource "aws_vpc_endpoint" "ssm" {
   subnet_ids          = [aws_subnet.private_subnet.id]
   security_group_ids  = [aws_security_group.ssm_sg.id]
   private_dns_enabled = true
-  
+
   tags = {
     Name = "${var.project_name}_ssm_endpoint"
   }
@@ -198,10 +198,10 @@ resource "aws_vpc_endpoint" "messages" {
 }
 
 resource "aws_vpc_endpoint" "s3" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.s3"
-  vpc_endpoint_type   = "Gateway"
-  route_table_ids = [aws_route_table.private_route_table.id]
+  vpc_id            = aws_vpc.main_vpc.id
+  service_name      = "com.amazonaws.us-east-1.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [aws_route_table.private_route_table.id]
 
   tags = {
     Name = "${var.project_name}_s3_endpoint"

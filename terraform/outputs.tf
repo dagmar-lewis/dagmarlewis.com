@@ -6,3 +6,7 @@
 output "ec2id" {
   value = aws_instance.instance.id
 }
+
+output "registry_url" {
+  value = aws_ecr_repository.dagmarlewis_portfolio.repository_url
+}

@@ -10,7 +10,7 @@ resource "aws_s3_bucket_versioning" "terraform_bucket_versioning" {
   bucket = aws_s3_bucket.terraform_state.id
   versioning_configuration {
     status = "Enabled"
-}
+  }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_crypto_conf" {
@@ -23,7 +23,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state_c
 }
 
 resource "aws_s3_bucket" "ec2-files" {
-  bucket = "${var.files_bucket_name}"
+  bucket = var.files_bucket_name
 
   tags = {
     Name = "${var.project_name}-ec2-files"
