@@ -3,7 +3,7 @@ name: Redeploy
 on:
     workflow_dispatch:
 env:
-  ec2: $(terraform output ec2id)
+  ec2: "i-09a0edd0684d6f62a"
 jobs:
     redeploy:
         runs-on: ubuntu-latest
