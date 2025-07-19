@@ -3,7 +3,7 @@ name: Redeploy
 on:
     workflow_dispatch:
 env:
-  ec2: terraform output ec2id
+  ec2: $(terraform output ec2id)
 jobs:
     redeploy:
         runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
                   --comment "Redeploy Nextjs app" \
-                  --instance-ids ${{ env.ec2 }} \
+                  --instance-ids ${{env.ec2}} \
                   --region "us-east-1" \
                   --parameters commands="\" 
                   sudo su - ubuntu -c 'touch myfiles'
