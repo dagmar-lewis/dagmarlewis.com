@@ -25,6 +25,9 @@ jobs:
 
             - name: Add file to ec2
               run: |
+                  cd terraform
+                  terraform fmt
+                  terraform init
                   aws ssm send-command \
                   --document-name "AWS-RunShellScript" \
                   --comment "Redeploy Nextjs app" \
