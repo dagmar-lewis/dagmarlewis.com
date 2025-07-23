@@ -27,6 +27,7 @@ jobs:
                 REPOSITORY: dagmarlewis_portfolio
                 IMAGE_TAG: latest
               run: |
+                cd frontend
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
                 docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
