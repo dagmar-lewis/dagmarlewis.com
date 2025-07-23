@@ -42,7 +42,7 @@ variable "subnet_cidr_block" {
 variable "cloudfront_distrubution_state" {
   description = "Set state from cloudfront distribution"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "ecr_repo_name" {

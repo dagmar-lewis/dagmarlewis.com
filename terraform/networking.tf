@@ -71,18 +71,11 @@ resource "aws_security_group" "allow_cloudfront_managed" {
   vpc_id      = aws_vpc.main_vpc.id
 
   ingress {
-    from_port       = 80
-    to_port         = 80
+    from_port       = 443
+    to_port         = 443
     protocol        = "tcp"
     prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
   }
-
-  # ingress {
-  #   from_port   = 443
-  #   to_port     = 443
-  #   protocol    = "tcp"
-  #   prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
-  # }
 
 
 }
@@ -148,11 +141,18 @@ resource "aws_security_group" "ecr_endpoint" {
   name        = "Ecr endpoint access"
   description = "allow outbound traffic"
   vpc_id      = aws_vpc.main_vpc.id
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_subnet.private_subnet.cidr_block]
+  }
+
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_subnet.private_subnet.cidr_block]
   }
 
   tags = {
@@ -211,12 +211,12 @@ resource "aws_vpc_endpoint" "s3" {
 }
 
 resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ecr.api"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ecr_endpoint.id]
-  private_dns_enabled = true
+  vpc_id             = aws_vpc.main_vpc.id
+  service_name       = "com.amazonaws.us-east-1.ecr.api"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = [aws_subnet.private_subnet.id]
+  security_group_ids = [aws_security_group.ecr_endpoint.id]
+
 
   tags = {
     Name = "${var.project_name}_ecr_endpoint"
@@ -224,12 +224,12 @@ resource "aws_vpc_endpoint" "ecr_api" {
 }
 
 resource "aws_vpc_endpoint" "ecr_docker" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ecr.dkr"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ecr_endpoint.id]
-  private_dns_enabled = true
+  vpc_id             = aws_vpc.main_vpc.id
+  service_name       = "com.amazonaws.us-east-1.ecr.dkr"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = [aws_subnet.private_subnet.id]
+  security_group_ids = [aws_security_group.ecr_endpoint.id]
+
 
   tags = {
     Name = "${var.project_name}_ecr_endpoint"
