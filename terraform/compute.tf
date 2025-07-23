@@ -27,6 +27,7 @@ resource "aws_instance" "instance" {
                   mkdir data config
                   sudo aws s3 cp s3://dagmarlewis.com-tf-files/Caddyfile .
                   sudo aws s3 cp s3://dagmarlewis.com-tf-files/docker-compose.yml .
+                  aws ecr get-login-password --region us-east-1| sudo docker login --username AWS --password-stdin 464858727777.dkr.ecr.us-east-1.amazonaws.com/dagmarlewis_portfolio
                   sudo docker network create proxy-network
                   sudo docker compose up -d
 
