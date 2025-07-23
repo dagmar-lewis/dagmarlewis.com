@@ -148,18 +148,11 @@ resource "aws_security_group" "ecr_endpoint" {
   name        = "Ecr endpoint access"
   description = "allow outbound traffic"
   vpc_id      = aws_vpc.main_vpc.id
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -223,7 +216,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = [aws_subnet.private_subnet.id]
   security_group_ids  = [aws_security_group.ecr_endpoint.id]
-
+  private_dns_enabled = true
 
   tags = {
     Name = "${var.project_name}_ecr_endpoint"
@@ -236,7 +229,7 @@ resource "aws_vpc_endpoint" "ecr_docker" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = [aws_subnet.private_subnet.id]
   security_group_ids  = [aws_security_group.ecr_endpoint.id]
-  
+  private_dns_enabled = true
 
   tags = {
     Name = "${var.project_name}_ecr_endpoint"
