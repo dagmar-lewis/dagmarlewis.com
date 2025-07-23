@@ -28,7 +28,7 @@ jobs:
               env:
                 REGISTRY: ${{ steps.login-ecr.outputs.registry }}
                 REPOSITORY: dagmarlewis_portfolio
-                IMAGE_TAG: latest
+                IMAGE_TAG: ${{ github.sha }}
               run: |
                 cd frontend
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
