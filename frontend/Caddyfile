@@ -1,3 +1,7 @@
+:80 {
+	reverse_proxy portfolio:3000
+}
+
 :443 {
 	reverse_proxy portfolio:3000
 }

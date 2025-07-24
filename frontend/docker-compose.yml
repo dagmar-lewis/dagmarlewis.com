@@ -5,7 +5,7 @@ services:
   Portfolio:
     container_name: portfolio
     image: 464858727777.dkr.ecr.us-east-1.amazonaws.com/dagmarlewis_portfolio:latest
-    expose:
+    ports:
       - "3000:3000"
     restart: unless-stopped
 
@@ -17,6 +17,7 @@ services:
     container_name: caddy
     image: caddy:latest
     ports:
+      - "80:80"
       - "443:443"
     volumes:
       - ./data:/data
