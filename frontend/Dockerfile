@@ -22,8 +22,7 @@ RUN bun run build
 
 FROM base AS runner
 WORKDIR /usr/src/app
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+
 
 COPY --from=builder --chown=bun:bun /usr/src/app/.next/standalone ./
 
@@ -34,8 +33,7 @@ COPY --from=builder --chown=bun:bun /usr/src/app/.next/static ./.next/static
 COPY --from=builder --chown=bun:bun /usr/src/app/public ./public
 
 USER bun
-EXPOSE 3000
+EXPOSE 3000/tcp
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
-ENV HOSTNAME="0.0.0.0"
 CMD ["bun", "server.js" ]

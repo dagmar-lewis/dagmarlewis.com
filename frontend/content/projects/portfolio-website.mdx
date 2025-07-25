@@ -1,27 +1,112 @@
 ---
-title: Deploying Portfolio Website Using Docker, Terraform and GitHub Actions To AWS
-description: NexusOS is a platform that empowers researchers, scientists, and innovators. This project was submitted as a project for the NASA Space Apps Challenge 2023, in which I was selected as a global nominee.
-tags: ["Next.js", "Github octokit", "Postgres", "Vercel AI SDK", "Zenodo API"]
-date: 2023-10-09
-image: "./assets/portfolio-website/infrastructure2.svg"
-imageDark: "./assets/portfolio-website/infrastructure2.svg"
+title: Deploying My Nextjs Portfolio Website Using Docker, Terraform and GitHub Actions To AWS EC2 In A Private Subnet
+description: This project deploys a Next.js portfolio website to AWS using Docker, Terraform, and GitHub Actions. It provisions a secure infrastructure with an EC2 instance in a private subnet, emphasizing security and automation through infrastructure-as-code and CI/CD pipelines.
+tags: ["Next.js","Terraform","Github Actions","Docker"]
+date: 2025-07-25
+image: "./assets/portfolio-website/infrastructure.png"
+imageDark: "./assets/portfolio-website/infrastructure.png"
 links:
   [
-    { name: "GitHub", url: "https://github.com/rudrodip/NexusOS" },
-    { name: "Website", url: "https://nexusos.vercel.app" },
-    { name: "Youtube", url: "https://youtu.be/xZwEQJX_JbQ" },
+    { name: "GitHub", url: "https://github.com/dagmar-lewis/dagmarlewis.com" },
+    { name: "Website", url: "https://dagmarlewis.com" },
     {
       name: "Twitter",
-      url: "https://x.com/rds_agi/status/1719750334535586107",
+      url: "https://x.com/dagmarlewis_",
     },
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/posts/rudrodip_nasa-space-apps-challenge-activity-7125520414692298753-vb51",
+      url: "https://www.linkedin.com/in/dagmarlewis/",
     },
   ]
 ---
-# Deploying a Nextjs Website Using Docker, Terraform and GitHub Actions To AWS EC2 In A Private Subnet
 
-![Infrastructure Diagram](./assets/portfolio-website/infrastructure2.svg)
+### Architecture
+Below is the architecture of this project. Click [here](./assets/portfolio-website/infrastructure.png) to access the diagram in detail.
 
----
+
+![architecture diagram](./assets/portfolio-website/infrastructure.png)
+
+
+## **Implementation**
+
+### **Containerizing The Nextjs Application With Docker**
+
+#### **Setting Up The Docker Environment**
+```yml
+FROM oven/bun:canary-alpine AS base
+
+WORKDIR /usr/src/app
+
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+
+FROM base AS install
+RUN mkdir -p /temp/prod
+COPY package*.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile
+
+
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM base AS builder
+COPY --from=install /temp/prod/node_modules node_modules
+COPY . .
+
+
+RUN bun run build
+
+FROM base AS runner
+WORKDIR /usr/src/app
+
+
+COPY --from=builder --chown=bun:bun /usr/src/app/.next/standalone ./
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+
+COPY --from=builder --chown=bun:bun /usr/src/app/.next/static ./.next/static
+COPY --from=builder --chown=bun:bun /usr/src/app/public ./public
+
+USER bun
+EXPOSE 3000/tcp
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
+CMD ["bun", "server.js" ]
+```
+### **Managing Services With Docker Compose**
+```yml
+networks:
+  proxy-network:
+    external: true
+services:
+  Portfolio:
+    container_name: portfolio
+    image: 464858727777.dkr.ecr.us-east-1.amazonaws.com/dagmarlewis_portfolio:latest
+    expose:
+      - "3000:3000"
+    restart: unless-stopped
+
+    networks:
+      - proxy-network
+
+
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data:/data
+      - ./config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+
+    restart: unless-stopped
+
+    networks:
+      - proxy-network
+```
+
+#### **Infrastructure as Code (IaC) with Terraform**
+
+#### **Automating Infrastructure Deployment And  Application Deployment Using Github Actions**

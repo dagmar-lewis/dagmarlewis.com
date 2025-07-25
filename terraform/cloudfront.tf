@@ -51,6 +51,4 @@ resource "aws_cloudfront_distribution" "vpc_origin_distribution" {
     cloudfront_default_certificate = true
   }
 
-
-
 }

@@ -145,7 +145,7 @@ export default function Home() {
               </FormItem>
             )}
           />
-          <div className="flex items-center">
+          <div className="flex  items-center">
             <FormField
               control={form.control}
               name="type"

@@ -71,10 +71,12 @@ resource "aws_security_group" "allow_cloudfront_managed" {
   vpc_id      = aws_vpc.main_vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
+
+    description = "allow inbound traffic"
   }
 
 
@@ -84,12 +86,15 @@ resource "aws_security_group" "egress_endpoint_sg" {
   name        = "Allow egress endpoint"
   description = "Allow traffic from egress endpoint"
   vpc_id      = aws_vpc.main_vpc.id
+  
 
   egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
     ipv6_cidr_blocks = ["::/0"]
+
+    description = "allow outbound traffic"
   }
 
   tags = {
@@ -106,7 +111,8 @@ resource "aws_security_group" "ssm_sg" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.main_vpc.cidr_block]
-    description = "Enable access for the endpoints."
+
+    description = "Enable access for ssm endpoint."
   }
 
   egress {
@@ -114,6 +120,8 @@ resource "aws_security_group" "ssm_sg" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.main_vpc.cidr_block]
+
+    description = "allow outbound traffic"
   }
 
 
@@ -131,6 +139,8 @@ resource "aws_security_group" "s3_endpoint" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+
+    description = "allow inbound outbound"
   }
 
   tags = {
@@ -147,12 +157,16 @@ resource "aws_security_group" "ecr_endpoint" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [aws_subnet.private_subnet.cidr_block]
+
+    description = "allow inbound traffic"
   }
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = [aws_subnet.private_subnet.cidr_block]
+
+    description = "allow outbound traffic"
   }
 
   tags = {
