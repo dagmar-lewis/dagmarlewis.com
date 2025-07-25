@@ -71,8 +71,8 @@ resource "aws_security_group" "allow_cloudfront_managed" {
   vpc_id      = aws_vpc.main_vpc.id
 
   ingress {
-    from_port   = 443
-    to_port     = 443
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
 
