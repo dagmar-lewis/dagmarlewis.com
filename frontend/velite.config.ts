@@ -108,7 +108,9 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          theme: "one-dark-pro",
+          theme: "poimandres",
+          keepBackground: false,
+          
           onVisitLine(node: LineElement) {
             // Prevent lines from collapsing in `display: grid` mode, and allow empty
             // lines to be copy/pasted
