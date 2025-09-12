@@ -1,4 +1,4 @@
-resource "aws_vpc" "main_vpc" {
+resource "aws_vpc" "main" {
   cidr_block                       = var.vpc_cidr_block
   assign_generated_ipv6_cidr_block = true
   enable_dns_hostnames             = true
@@ -11,241 +11,73 @@ resource "aws_vpc" "main_vpc" {
 }
 
 
-resource "aws_subnet" "private_subnet" {
-  vpc_id                          = aws_vpc.main_vpc.id
-  cidr_block                      = var.subnet_cidr_block
-  ipv6_cidr_block                 = cidrsubnet(aws_vpc.main_vpc.ipv6_cidr_block, 8, 1)
-  assign_ipv6_address_on_creation = true
-  availability_zone               = "${var.region}a"
+resource "aws_subnet" "public" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.subnet_cidr_block
+  availability_zone       = "${var.region}a"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "${var.project_name}_subnet"
   }
 }
 
-resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = aws_vpc.main_vpc.id
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
 
   tags = {
     Name = "${var.project_name}_internet_gateway"
   }
 }
-resource "aws_egress_only_internet_gateway" "main" {
-  vpc_id = aws_vpc.main_vpc.id
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
 
   tags = {
-    Name = "${var.project_name}_egress_gateway"
+    Name = "${var.project_name}-public-route-table"
   }
 }
 
-resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.main_vpc.id
-
-  tags = {
-    Name = "${var.project_name}_private_route_table"
-  }
+resource "aws_route_table_association" "public_route_table_association" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
 }
 
-resource "aws_route_table_association" "private_route_table_association" {
-  subnet_id      = aws_subnet.private_subnet.id
-  route_table_id = aws_route_table.private_route_table.id
-
-
-}
-
-resource "aws_route" "private_subnet_ipv6_route" {
-  route_table_id              = aws_route_table.private_route_table.id
-  destination_ipv6_cidr_block = "::/0"
-  egress_only_gateway_id      = aws_egress_only_internet_gateway.main.id
-
-}
-
-
-data "aws_ec2_managed_prefix_list" "cloudfront" {
-  name = "com.amazonaws.global.cloudfront.origin-facing"
-}
-
-resource "aws_security_group" "allow_cloudfront_managed" {
-  name        = "allow-cloudfront-managed"
-  description = "Allow traffic from CloudFront (AWS managed prefix list)"
-  vpc_id      = aws_vpc.main_vpc.id
+resource "aws_security_group" "public" {
+  vpc_id = aws_vpc.main.id
+  name   = "${var.project_name}-public-sg"
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Referencing the managed prefix list
-
-    description = "allow inbound traffic"
+    cidr_blocks = ["0.0.0.0/0"]
   }
-
-
-}
-
-resource "aws_security_group" "egress_endpoint_sg" {
-  name        = "Allow egress endpoint"
-  description = "Allow traffic from egress endpoint"
-  vpc_id      = aws_vpc.main_vpc.id
-  
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    ipv6_cidr_blocks = ["::/0"]
-
-    description = "allow outbound traffic"
-  }
-
-  tags = {
-    Name = "${var.project_name}_egress_sg"
-  }
-}
-
-resource "aws_security_group" "ssm_sg" {
-  name        = "endpoint_access"
-  description = "allow inbound traffic"
-  vpc_id      = aws_vpc.main_vpc.id
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
-
-    description = "Enable access for ssm endpoint."
-  }
-
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
-
-    description = "allow outbound traffic"
-  }
-
-
-  tags = {
-    Name = "${var.project_name}_ssm_sg"
-  }
-}
-
-resource "aws_security_group" "s3_endpoint" {
-  name        = "s3_gateway_access"
-  description = "allow outbound traffic"
-  vpc_id      = aws_vpc.main_vpc.id
-  egress {
-    from_port   = 443
-    to_port     = 443
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-
-    description = "allow inbound outbound"
-  }
-
-  tags = {
-    Name = "${var.project_name}_s3_endpoint"
-  }
-}
-resource "aws_security_group" "ecr_endpoint" {
-  name        = "Ecr endpoint access"
-  description = "allow outbound traffic"
-  vpc_id      = aws_vpc.main_vpc.id
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_subnet.private_subnet.cidr_block]
-
-    description = "allow inbound traffic"
   }
   egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [aws_subnet.private_subnet.cidr_block]
-
-    description = "allow outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+}
 
-  tags = {
-    Name = "${var.project_name}_ecr_endpoint"
-  }
+resource "aws_eip" "bar" {
+  domain = "vpc"
+
+  instance   = aws_instance.public.id
+  depends_on = [aws_internet_gateway.main]
 }
 
 
 
-resource "aws_vpc_endpoint" "ssm" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ssm"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ssm_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "${var.project_name}_ssm_endpoint"
-  }
-}
-resource "aws_vpc_endpoint" "ec2messages" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ec2messages"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ssm_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "${var.project_name}_ec2messages_endpoint"
-  }
-}
-resource "aws_vpc_endpoint" "messages" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ssmmessages"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ssm_sg.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "${var.project_name}_messages_endpoint"
-  }
-}
-
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id            = aws_vpc.main_vpc.id
-  service_name      = "com.amazonaws.us-east-1.s3"
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = [aws_route_table.private_route_table.id]
-  
-  tags = {
-    Name = "${var.project_name}_s3_endpoint"
-  }
-}
-
-resource "aws_vpc_endpoint" "ecr_api" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ecr.api"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ecr_endpoint.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "${var.project_name}_ecr_endpoint"
-  }
-}
-
-resource "aws_vpc_endpoint" "ecr_docker" {
-  vpc_id              = aws_vpc.main_vpc.id
-  service_name        = "com.amazonaws.us-east-1.ecr.dkr"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = [aws_subnet.private_subnet.id]
-  security_group_ids  = [aws_security_group.ecr_endpoint.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "${var.project_name}_ecr_endpoint"
-  }
-}

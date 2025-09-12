@@ -16,6 +16,7 @@ To get a local copy up and running, follow these simple steps.
 ### Prerequisites
 
 - [Bun](https://bun.sh/)
+- [Docker](https://www.docker.com/)
 
 ### Installation
 
@@ -37,6 +38,21 @@ To get a local copy up and running, follow these simple steps.
     ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Running with Docker
+
+To run the application with Docker, run the following command in the `frontend` directory to build the image:
+
+```sh
+docker build -t dagmarlewis_portfolio .
+```
+
+Then, run the following command to start the application with Docker Compose:
+
+```sh
+docker-compose up -d
+```
+
 
 ## Deployment
 

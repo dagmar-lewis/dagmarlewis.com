@@ -39,14 +39,3 @@ variable "subnet_cidr_block" {
   default     = "10.0.1.0/24"
 }
 
-variable "cloudfront_distrubution_state" {
-  description = "Set state from cloudfront distribution"
-  type        = bool
-  default     = false
-}
-
-variable "ecr_repo_name" {
-  description = "Portfolio website ecr repo name"
-  type        = string
-  default     = "dagmarlewis_portfolio"
-}

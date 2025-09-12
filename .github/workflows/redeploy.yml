@@ -34,13 +34,10 @@ jobs:
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
                 docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-            - name: Redeploy portfolio docker container
-              run: |
-                  aws ssm send-command \
-                  --document-name "AWS-RunShellScript" \
-                  --comment "Redeploy Nextjs app" \
-                  --instance-ids ${{secrets.EC2_ID}} \
-                  --region "us-east-1" \
-                  --parameters commands="\" 
-                  sudo su - ubuntu -c './caddy/redeploy.sh'
-                  \"" \
+            - name: Redeploy EC2 Instance
+              run: | 
+                cd .ops/terraform
+                terraform fmt
+                terraform init
+                terraform plan
+                terraform apply -replace=aws_instance.public -auto-approve
