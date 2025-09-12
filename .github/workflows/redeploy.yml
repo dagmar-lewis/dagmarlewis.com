@@ -45,10 +45,15 @@ jobs:
                 tags: ${{ steps.meta.outputs.tags }}
                 labels: ${{ steps.meta.outputs.labels }}
             
+            - name: Upload To S3
+              run: | 
+                cd frontend
+                aws s3 cp Caddyfile  s3://dagmarlewis.com-tf-files
+                aws s3 cp docker-compose.yml  s3://dagmarlewis.com-tf-files
 
             - name: Redeploy EC2 Instance
               run: | 
-                cd .ops/terraform
+                cd ops/terraform
                 terraform fmt
                 terraform init
                 terraform plan

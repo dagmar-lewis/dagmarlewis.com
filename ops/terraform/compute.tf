@@ -38,7 +38,4 @@ resource "aws_instance" "public" {
   }
 }
 
-# aws s3 cp Caddyfile  s3://dagmarlewis.com-tf-files
-
-# aws s3 cp docker-compose.yml  s3://dagmarlewis.com-tf-files
 
