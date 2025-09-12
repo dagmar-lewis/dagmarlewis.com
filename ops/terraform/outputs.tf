@@ -1,4 +1,3 @@
-output "ec2id" {
-  value = aws_instance.public.id
+output "Public_ip" {
+  value = aws_eip.public.public_ip
 }
-

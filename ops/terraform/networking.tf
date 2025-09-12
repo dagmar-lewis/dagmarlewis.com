@@ -72,7 +72,7 @@ resource "aws_security_group" "public" {
   }
 }
 
-resource "aws_eip" "bar" {
+resource "aws_eip" "public" {
   domain = "vpc"
 
   instance   = aws_instance.public.id
