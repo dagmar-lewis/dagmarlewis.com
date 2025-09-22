@@ -7,18 +7,24 @@ import { navbarConfig } from "@/config/navbar.config";
 
 export default function Navbar() {
   return (
-    <div className="sticky top-0 inline-flex items-center text-sm rounded-lg nav-container z-50">
-      {navbarConfig.map((item, index) => (
-        <NavItem
-          key={index}
-          url={item.url}
-          className={cn(index == 0 && "rounded-l-lg border-l-[0.5px]", index == navbarConfig.length - 1 && "rounded-r-lg border-r-[0.5px]")}
-        >
-          {item.title}
-        </NavItem>
-      ))}
-    </div>
-  );
+      <div className="bg sticky bg-background top-0 z-50 w-full pt-6 mb-2">
+          <div className="sticky top-0 inline-flex items-center  text-sm rounded-lg lg:mb-8 nav-container z-50">
+              {navbarConfig.map((item, index) => (
+                  <NavItem
+                      key={index}
+                      url={item.url}
+                      className={cn(
+                          index == 0 && 'rounded-l-lg border-l-[0.5px]',
+                          index == navbarConfig.length - 1 &&
+                              'rounded-r-lg border-r-[0.5px]'
+                      )}
+                  >
+                      {item.title}
+                  </NavItem>
+              ))}
+          </div>
+      </div>
+  )
 }
 
 type NavItemProps = {
@@ -42,5 +48,7 @@ const NavItem = ({ children, url, className }: NavItemProps) => {
         {children}
       </div>
     </Link>
+
+    
   );
 };

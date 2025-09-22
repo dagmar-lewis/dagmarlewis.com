@@ -1,14 +1,17 @@
 import { siteConfig } from "@/config/site.config";
 import { portfolioConfig } from "@/config/portfolio.config";
 import { Socials } from "@/components/socials";
+import Counter from "./counter";
 import Link from "next/link";
 import ThemeToggler from "@/components/theme/theme-toggler";
-import { Rss } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { skillsConfig } from "@/config/skills.config";
 
 
+
 export default function Hero() {
+
+  
   return (
     <section className="w-full flex flex-col lg:min-h-[calc(100vh-7rem)]">
       <Link href="/">
@@ -18,11 +21,8 @@ export default function Hero() {
         <h1 className="head-text-sm">{portfolioConfig.name}</h1>
         <div className="flex items-center gap-2">
           <Button size="icon" variant="ghost" className="rounded-full" asChild>
-            <Link href="/feed">
-              <Rss size={18} />
-              <span className="sr-only">rss feed</span>
-            </Link>
           </Button>
+          <Counter/>
           <ThemeToggler />
         </div>
       </div>
