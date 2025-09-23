@@ -5,7 +5,7 @@ import { DynamoDBClient, GetItemCommand, UpdateItemCommand, PutItemCommand } fro
 const dynamoDB = new DynamoDBClient();
 
 export const handler = async (event) => {
-    const tableName = "visit-counter-table"; // Your DynamoDB table name
+    const tableName = "dagmarlewis_portfolio_table"; // Your DynamoDB table name
 
     let currentCount = 0;
 
