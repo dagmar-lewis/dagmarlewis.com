@@ -1,3 +1,4 @@
+"use client"
 import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
 
@@ -14,11 +15,9 @@ export default function LandingPageLayout({
               </div>
               <div
                   id="tab-section"
-                  className="relative w-full mt-0 max-w-4xl mx-auto lg:mt-0 md:pl-8 lg:h-full lg:w-3/5   lg:overflow-y-scroll"
+                  className="relative w-full mt-0 max-w-4xl mx-auto lg:mt-0 no-scrollbar  md:pl-8 lg:h-full lg:w-3/5 lg:overflow-y-scroll"
               >
-                  
-                      <Navbar />
-                  
+                  <Navbar />
                   {children}
               </div>
           </div>

@@ -1,3 +1,4 @@
+"use client"
 import React, { useMemo, } from 'react'
 import ProjectCard from '@/components/project/project-card'
 import { projects } from '#site/content'

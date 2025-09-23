@@ -6,13 +6,14 @@ export default function Counter() {
   
   const [visitCount, setVisitCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loaded,setLoaded] = useState(false)
 
   useEffect(() => {
       const fetchVisitCount = async () => {
           try {
               // Replace with your actual API Gateway URL
               const response = await fetch(
-                  'https://34or6kn2i7.execute-api.us-east-1.amazonaws.com/prod/',
+                  'https://ji3nndqmta.execute-api.us-east-1.amazonaws.com/prod/',
                   {
                       method: 'GET',
                   }
@@ -32,9 +33,11 @@ export default function Counter() {
               setLoading(false)
           }
       }
+      if (loaded == false){
+      fetchVisitCount()}
 
-      fetchVisitCount()
-  }, [])
+      setLoaded(true)
+  }, [loaded])
 
   return (
     <div className='flex text-lg gap-2'>

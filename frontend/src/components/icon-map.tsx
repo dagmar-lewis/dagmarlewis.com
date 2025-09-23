@@ -1,4 +1,4 @@
-import { GitHubLogoIcon, TwitterLogoIcon, DiscordLogoIcon, LinkedInLogoIcon, InstagramLogoIcon, GlobeIcon, VideoIcon } from "@radix-ui/react-icons";
+import { GitHubLogoIcon, TwitterLogoIcon, DiscordLogoIcon, LinkedInLogoIcon, InstagramLogoIcon, GlobeIcon, VideoIcon, BadgeIcon,} from "@radix-ui/react-icons";
 import { Mail } from 'lucide-react'
 
 export const IconMap = {
@@ -9,5 +9,6 @@ export const IconMap = {
   instagram: <InstagramLogoIcon />,
   website: <GlobeIcon />,
   youtube: <VideoIcon />,
-  mail: <Mail size={16} />
+  mail: <Mail size={16} />,
+  credly: <BadgeIcon/>
 }
