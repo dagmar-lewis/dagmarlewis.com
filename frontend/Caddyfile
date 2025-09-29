@@ -1,4 +1,4 @@
-dagmarlewis.com {
+https://dagmarlewis.com {
 	reverse_proxy portfolio:3000
 }
 
