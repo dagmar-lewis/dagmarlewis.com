@@ -12,7 +12,7 @@ export default function Counter() {
             try {
                 // Replace with your actual API Gateway URL
                 const response = await fetch(
-                    'https://11xl2nq4mg.execute-api.us-east-1.amazonaws.com/prod/',
+                    'https://kv4bqvwewj.execute-api.us-east-1.amazonaws.com/prod/',
                     {
                         method: 'GET',
                     }
