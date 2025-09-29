@@ -6,6 +6,7 @@ import Link from "next/link";
 import ThemeToggler from "@/components/theme/theme-toggler";
 import { Button } from "@/components/ui/button";
 import { skillsConfig } from "@/config/skills.config";
+import { Rss } from 'lucide-react'
 
 
 
@@ -27,7 +28,12 @@ export default function Hero() {
                       variant="ghost"
                       className="rounded-full"
                       asChild
-                  ></Button>
+                  >
+                      <Link href="/feed">
+                          <Rss size={18} />
+                          <span className="sr-only">rss feed</span>
+                      </Link>
+                  </Button>
                   <Counter />
                   <ThemeToggler />
               </div>

@@ -25,7 +25,7 @@ export const siteConfig: Site = {
     "grafana",
     "computer science",
   ],
-  siteUrl: "https://dagmarlewis.com",
+  siteUrl: "http://localhost:3000",
   creator: {
     name: "Dagmar Lewis",
     url: "https://dagmarlewis.com",

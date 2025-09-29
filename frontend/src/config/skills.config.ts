@@ -22,7 +22,8 @@ export const skillsConfig = [
   {
     category: "Containerization",
     technologies: [
-    "Docker"
+    "Docker",
+    "Podman"
     ],
   },
   {

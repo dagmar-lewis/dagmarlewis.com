@@ -1,10 +1,6 @@
-#Create a role
-#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
+
 resource "aws_iam_role" "ec2_role" {
   name = "${var.project_name}_ec2-role"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -21,17 +17,6 @@ resource "aws_iam_role" "ec2_role" {
 }
 
 
-
-#Attach role to policy
-#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment
-resource "aws_iam_role_policy_attachment" "custom" {
-  role       = aws_iam_role.ec2_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-
-}
-
-#Attach role to an instance profile
-#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.project_name}_ec2_profile"
   role = aws_iam_role.ec2_role.name
@@ -61,5 +46,10 @@ resource "aws_iam_policy" "s3_access_policy" {
 resource "aws_iam_role_policy_attachment" "s3_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.s3_access_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "api_gateway" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess"
 }
 
