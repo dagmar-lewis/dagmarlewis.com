@@ -1,4 +1,4 @@
-:80 {
+dagmarlewis.com {
 	reverse_proxy portfolio:3000
 }
 

@@ -48,8 +48,4 @@ resource "aws_iam_role_policy_attachment" "s3_attachment" {
   policy_arn = aws_iam_policy.s3_access_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "api_gateway" {
-  role       = aws_iam_role.ec2_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess"
-}
 

@@ -8,22 +8,6 @@ export const handler = async (event) => {
     const tableName = "dagmarlewis_portfolio_table"; // Your DynamoDB table name
     const ip = event.requestContext?.identity?.sourceIp || 'unknown';
 
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Content-Type': 'application/json'
-    };
-
-    // Handle OPTIONS request for CORS preflight
-    if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 200,
-            headers,
-            body: ''
-        };
-    }
-
     if (ip === 'unknown') {
         // Just return the current count without incrementing if IP is unknown
         try {
@@ -34,14 +18,12 @@ export const handler = async (event) => {
             const count = result.Item ? parseInt(result.Item.count.N, 10) : 0;
             return {
                 statusCode: 200,
-                headers,
                 body: JSON.stringify({ count })
             };
         } catch (error) {
             console.error('Error fetching current count for unknown IP:', error);
             return {
                 statusCode: 500,
-                headers,
                 body: JSON.stringify({ message: 'Error fetching current count' })
             };
         }
@@ -69,7 +51,6 @@ export const handler = async (event) => {
             console.error('Error checking/adding visitor IP:', error);
             return {
                 statusCode: 500,
-                headers,
                 body: JSON.stringify({ message: 'Error processing visitor IP' })
             };
         }
@@ -91,7 +72,7 @@ export const handler = async (event) => {
             finalCount = parseInt(result.Attributes.count.N, 10);
         } catch (error) {
             console.error('Error updating visit count:', error);
-            return { statusCode: 500, headers, body: JSON.stringify({ message: 'Error updating visit count' }) };
+            return { statusCode: 500, body: JSON.stringify({ message: 'Error updating visit count' }) };
         }
     } else {
         // For returning visitors, just fetch the current count.
@@ -100,14 +81,13 @@ export const handler = async (event) => {
             finalCount = result.Item ? parseInt(result.Item.count.N, 10) : 0;
         } catch (error) {
             console.error('Error fetching current count for returning visitor:', error);
-            return { statusCode: 500, headers, body: JSON.stringify({ message: 'Error fetching current count' }) };
+            return { statusCode: 500, body: JSON.stringify({ message: 'Error fetching current count' }) };
         }
     }
 
     // Return the count to the client
     return {
         statusCode: 200,
-        headers,
         body: JSON.stringify({ count: finalCount })
     };
 };
