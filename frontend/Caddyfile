@@ -2,4 +2,9 @@ https://dagmarlewis.com {
 	reverse_proxy portfolio:3000
 }
 
+:80 www.dagmarlewis.com {
+	redir https://dagmarlewis.com{uri}
+}
+
+
 
