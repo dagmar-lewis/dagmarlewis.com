@@ -13,7 +13,7 @@ export const CodeBlock = ({
           </div>
           <pre
               className={cn(
-                  'overflow-x-auto text-pretty py-4 backdrop-filter backdrop-blur-3xl rounded-xl drop-shadow-sm backdrop-saturate-150 bg-neutral-900 bg-opacity-70',
+                  'overflow-x-auto text-pretty py-4 backdrop-filter backdrop-blur-3xl rounded-b-xl drop-shadow-sm backdrop-saturate-150 bg-neutral-900 bg-opacity-70',
                   className
               )}
               {...props}
