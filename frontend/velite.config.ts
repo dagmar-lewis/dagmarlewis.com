@@ -108,7 +108,7 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          theme: "poimandres",
+          theme: "houston",
           keepBackground: false,
           
           onVisitLine(node: LineElement) {

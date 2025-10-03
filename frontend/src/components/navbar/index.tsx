@@ -14,6 +14,7 @@ export default function Navbar() {
                       key={index}
                       url={item.url}
                       className={cn(
+                          item.title === 'About' && 'lg:hidden',
                           index == 0 && 'rounded-l-lg border-l-[0.5px]',
                           index == navbarConfig.length - 1 &&
                               'rounded-r-lg border-r-[0.5px]'
