@@ -18,7 +18,7 @@ export default function BlogCard({
             width={200}
             height={111}
             alt={blog.title}
-            className="w-full aspect-[8/5] object-cover scale-105 group-hover/blog-card:scale-100 duration-300 transition-all ease-in-out"
+            className="w-full aspect-[8/5] object-contain scale-105 group-hover/blog-card:scale-100 duration-300 transition-all ease-in-out"
           />
         </div>
         <div className="p-3">

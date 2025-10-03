@@ -2,17 +2,6 @@ networks:
   proxy-network:
     external: true
 services:
-  Portfolio:
-    container_name: portfolio
-    image: dagmarl/portfolio:main
-    expose:
-      - "3000:3000"
-    restart: unless-stopped
-
-    networks:
-      - proxy-network
-
-
   caddy:
     container_name: caddy
     image: caddy:latest
@@ -26,5 +15,14 @@ services:
 
     restart: unless-stopped
 
+    networks:
+      - proxy-network
+  Portfolio:
+    container_name: portfolio
+    image: dagmarl/portfolio:main
+    expose:
+      - "3000:3000"
+    restart: unless-stopped
+    
     networks:
       - proxy-network

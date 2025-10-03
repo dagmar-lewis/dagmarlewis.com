@@ -5,8 +5,7 @@ resource "aws_dynamodb_table" "main" {
 
   attribute {
     name = "id"
-    type = "S" # S for String
+    type = "S"
   }
 
-  
 }

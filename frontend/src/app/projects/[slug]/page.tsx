@@ -105,6 +105,7 @@ export default async function ProjectPage(props: ProjectPageProps) {
             className="border rounded-xl mx-auto"
           />
           <h1 className="head-text-sm py-1 mt-6 mb-4">{project.title}</h1>
+          
           <div className="mb-8">
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {project.links.map((link, i) => (

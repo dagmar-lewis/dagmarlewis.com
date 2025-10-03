@@ -1,0 +1,460 @@
+---
+title: Deploying My Nextjs Portfolio Website Using Docker, Terraform and GitHub Actions To AWS EC2 In A Private Subnet
+description: This project deploys a Next.js portfolio website to AWS using Docker, Terraform, and GitHub Actions. It provisions a secure infrastructure with an EC2 instance in a private subnet, emphasizing security and automation through infrastructure-as-code and CI/CD pipelines.
+tags: ["Next.js","Terraform","Github Actions","Docker"]
+date: 2025-07-25
+image: "./assets/portfolio-website/infrastructure-light.png"
+imageDark: "./assets/portfolio-website/infrastructure-dark.png"
+links:
+  [
+    { name: "GitHub", url: "https://github.com/dagmar-lewis/dagmarlewis.com" },
+    { name: "Website", url: "https://dagmarlewis.com" },
+    {
+      name: "Twitter",
+      url: "https://x.com/dagmarlewis_",
+    },
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/dagmarlewis/",
+    },
+  ]
+---
+
+### Architecture
+
+Below is the architecture of this project. Click [here](./assets/portfolio-website/infrastructure-light.png) to access the diagram in detail.
+
+
+## **Implementation**
+
+  
+
+### **Containerizing The Nextjs Application With Docker**
+
+  
+
+To ensure consistency across different environments, I containerized the Next.js frontend using Docker. This eliminated dependency issues and allowed smooth deployment across local and cloud environments.
+
+  
+
+### **Setting Up The Docker Environment**
+
+I created the Dockerfile for the Nextjs app by using a multi-stage build to keep the final image lightweight while ensuring an optimal production build.Here's the Dockerfile:
+
+```yml
+
+FROM oven/bun:canary-alpine AS base
+
+  
+
+WORKDIR /usr/src/app
+
+  
+
+# install dependencies into temp directory
+
+# this will cache them and speed up future builds
+
+  
+
+FROM base AS install
+
+RUN mkdir -p /temp/prod
+
+COPY package*.json bun.lockb /temp/prod/
+
+RUN cd /temp/prod && bun install --frozen-lockfile
+
+  
+  
+
+# copy node_modules from temp directory
+
+# then copy all (non-ignored) project files into the image
+
+FROM base AS builder
+
+COPY --from=install /temp/prod/node_modules node_modules
+
+COPY . .
+
+  
+  
+
+RUN bun run build
+
+  
+
+FROM base AS runner
+
+WORKDIR /usr/src/app
+
+  
+  
+
+COPY --from=builder --chown=bun:bun /usr/src/app/.next/standalone ./
+
+  
+
+# Automatically leverage output traces to reduce image size
+
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+
+  
+
+COPY --from=builder --chown=bun:bun /usr/src/app/.next/static ./.next/static
+
+COPY --from=builder --chown=bun:bun /usr/src/app/public ./public
+
+  
+
+USER bun
+
+EXPOSE 3000/tcp
+
+# server.js is created by next build from the standalone output
+
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
+
+CMD ["bun", "server.js" ]
+
+```
+
+  
+
+#### **Why this setup?**
+
+- **Multi-stage build:** Keeps the final image lightweight by only including necessary files.
+
+  
+
+- **Alpine-based Bun image:** Reduces image size while maintaining compatibility.
+
+  
+
+- **Port 3000 exposed:** To match Next.js default behavior.
+
+  
+
+#### **Managing Services With Docker Compose**
+
+Instead of starting each container manually, I created a **docker-compose.yml** file to orchestrate all services,including the Nextjs app and Caddy proxy.
+
+  
+
+```yml
+
+networks:
+
+proxy-network:
+
+external: true
+
+services:
+
+caddy:
+
+container_name: caddy
+
+image: caddy:latest
+
+ports:
+
+- "443:443"
+
+- "80:80"
+
+volumes:
+
+- ./data:/data
+
+- ./config:/config
+
+- ./Caddyfile:/etc/caddy/Caddyfile:ro
+
+  
+
+restart: unless-stopped
+
+  
+
+networks:
+
+- proxy-network
+
+Portfolio:
+
+container_name: portfolio
+
+image: dagmarl/portfolio:main
+
+expose:
+
+- "3000:3000"
+
+restart: unless-stopped
+
+networks:
+
+- proxy-network
+
+```
+
+#### Caddy file for the caddy container
+
+The caddy container needed a Caddyfile so it knows where to redirect traffic to
+
+```json
+
+https://dagmarlewis.com {
+
+reverse_proxy portfolio:3000
+
+}
+
+  
+
+:80 www.dagmarlewis.com {
+
+redir https://dagmarlewis.com{uri}
+
+}
+
+```
+
+#### Why This Approach?
+
+  
+
+- **Caddy for reverse proxy:** It routes traffic from port:443 over the proxy network to the application
+
+  
+
+- **Proxy network:** Isolates traffic from the general system
+
+  
+
+#### Running The Containers
+
+After writing the docker-compose.yml file I started all services with
+
+```sh
+
+docker compose up -d
+
+```
+
+This automatically:
+
+- Starts the nextjs container and caddy container.
+
+- Ensures everything runs in detached mode (-d).
+
+### **Infrastructure as Code (IaC) with Terraform**
+
+For infrastructure provisioning, I used Terraform to ensure my cloud resources were managed efficiently and reproducibly. Instead of manually configuring services, Terraform allowed me to define everything as code, making deployments consistent.
+
+**Why Terraform?**
+-  **Infrastructure as Code (IaC)**: Enables automation and avoids manual setup errors.
+-  **Modularity**: Resources can be structured into reusable modules.
+-  **State Management**: Keeps track of infrastructure changes
+-  **Multi-Cloud Support**: Can be extended beyond AWS if needed.
+
+#### I deployed the following AWS resources
+
+
+1 **Amazon S3 for storage** [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/storage.tf)
+
+I used **AmazonS3** to store the docker-compose.yml, Caddyfile and terraform state files. 
+
+
+ 2 **Amazon EC2 For Compute** [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/compute.tf)
+
+   While ECS or EKS could be alternatives, I opted for **EC2** instances to run my containers for simplicity and flexibility. EC2 gives me full control over the underlying infrastructure, making it easier to customize the deployment environment. 
+
+
+3 **Networking**  [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/networking.tf)
+
+  The networking consist of : 
+- Virtual Private cloud 
+- Public Subnet to allow incoming connection  
+- Internet gateway to enable internet access 
+- Route Table and Association to route internet to the ec2 instance
+- Security group to route Http and Https traffic to the ec2 instance and allow outbound traffic from the ec2 instance
+- Elastic IP to maintain a static IP for the ec2 instance so even if an ec2 instance is redeployed it will still have the same IP address and the domain wouldn't need to be updated
+
+
+4 **Dynamo Db For Database** [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/dynamodb.tf)
+
+While other database options were available dynamo db was a perfect solution for this project since its serverless and cost effective  it stores the visitor count for my portfolio
+
+
+5  **Lambda For Backend** [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/lambda.tf)
+
+ Lambda runs the backend function that updates the visitor count in dynamo db this function can be found 
+[here](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/backend/index.mjs) 
+
+
+6 **API Gateway For  Backend Access** [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/api_gateway.tf)
+
+  Api Gateway sits in front the lambda function so that every get request that it receives display the current viewer count and increment the viewers by one
+
+
+ 7 **IAM For Permission** [code](https://github.com/dagmar-lewis/dagmarlewis.com/blob/main/ops/terraform/iam.tf)
+
+All the permissions were handled by IAM using roles to provide secure access to the different resources
+
+  
+ 
+
+### **Automating Docker Image Build, Infrastructure Deployment And Application Redeployment Using Github Actions**
+
+
+1 **I created the github action to build the docker image and push it to docker hub** 
+
+```yml
+name: Docker Build
+
+on:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: Chekout Code
+              uses: actions/checkout@v4
+
+            - name: Log in to Docker Hub
+              uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Extract metadata (tags, labels) for Docker
+              id: meta
+              uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+              with:
+                images: dagmarl/portfolio
+
+            - name: Build and push Docker image
+              id: push
+              uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+              with:
+                context: ./frontend
+                file: ./frontend/Dockerfile
+                push: true
+                tags: ${{ steps.meta.outputs.tags }}
+                labels: ${{ steps.meta.outputs.labels }}
+
+```
+
+2 **Created the terraform apply action that goes through the steps of initializing terraform runs the plan command and finally the applys the plan **
+
+```yml
+name: Terrafrom Apply
+
+on:
+    workflow_dispatch:
+
+jobs:
+    apply:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Chekout code
+              uses: actions/checkout@v4
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4.2.1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: 'us-east-1'
+
+            - name: Initialize Terraform
+              run: |
+                  cd ops/terraform
+                  terraform fmt
+                  terraform init
+
+            - name: Terraform Plan
+              run: |
+                  cd ops/terraform
+                  terraform plan
+
+            - name: Terraform Apply
+              run: |
+                  cd ops/terraform
+                  terraform apply -auto-approve
+
+```
+
+
+3 **The last action i created was the  redeploy action it rebuilds the docker image when code in the frontend directory is updated and pushed to github then it runs a command to redeploy the ec2 instance on aws**
+
+```yml
+name: Redeploy
+
+on:
+    workflow_dispatch:
+    push:
+        branches: [main]
+        paths: ['frontend/**']
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Chekout Code
+              uses: actions/checkout@v4
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4.2.1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: 'us-east-1'
+
+            - name: Log in to Docker Hub
+              uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Extract metadata (tags, labels) for Docker
+              id: meta
+              uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+              with:
+                images: dagmarl/portfolio
+
+            - name: Build and push Docker image
+              id: push
+              uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+              with:
+                context: ./frontend
+                file: ./frontend/Dockerfile
+                push: true
+                tags: ${{ steps.meta.outputs.tags }}
+                labels: ${{ steps.meta.outputs.labels }}
+            
+            - name: Upload To S3
+              run: | 
+                cd frontend
+                aws s3 cp Caddyfile  s3://dagmarlewis.com-tf-files
+                aws s3 cp docker-compose.yml  s3://dagmarlewis.com-tf-files
+
+            - name: Redeploy EC2 Instance
+              run: | 
+                cd ops/terraform
+                terraform fmt
+                terraform init
+                terraform plan
+                terraform apply -replace=aws_instance.public -auto-approve
+```

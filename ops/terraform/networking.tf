@@ -1,9 +1,5 @@
 resource "aws_vpc" "main" {
   cidr_block                       = var.vpc_cidr_block
-  assign_generated_ipv6_cidr_block = true
-  enable_dns_hostnames             = true
-  enable_dns_support               = true
-
   tags = {
     Name = "${var.project_name}_vpc"
   }
@@ -15,7 +11,6 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.subnet_cidr_block
   availability_zone       = "${var.region}a"
-  map_public_ip_on_launch = true
 
   tags = {
     Name = "${var.project_name}_subnet"
@@ -61,12 +56,6 @@ resource "aws_security_group" "public" {
   ingress {
     from_port   = 80
     to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 22
-    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
