@@ -33,21 +33,6 @@ export const skillsConfig = [
       "Python"
     ],
   },
-  
-  {
-    category: "Frontend",
-    technologies: [
-      "Nextjs",
-      "React"
-    ],
-  },
-{
-    category: "Backend",
-    technologies: [
-      "Nodejs",
-      "Bun"
-    ],
-  },
   {
     category: "Virtualization",
     technologies: [
@@ -80,10 +65,7 @@ export const skillsConfig = [
       "Aws Solutions Architect Associate",
       "Terraform Associate"
     ],
-    links:[
-      "https://www.credly.com/badges/8b4ec419-e1f2-408b-beff-3414940599f5/public_url",
-      "https://www.credly.com/badges/122a5281-f146-41ba-9720-94a1f46833f0/public_url"
-    ]
+    link:"https://www.credly.com/users/dagmar-lewis.4e531191"
   },
 
 ];
