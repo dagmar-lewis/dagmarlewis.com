@@ -8,7 +8,7 @@ export default async function generateRssFeed() {
 
   const feedOptions = {
     title: `Blogs`,
-    description: "Hey! I am RDS (Rudro Dip Sarker), and its my personal blog where I share my learnings, experiences, and thoughts on different topics. I mostly talk about tech, but I don't have any specific niche.  I write about whatever I find interesting. I hope you will find my blogs helpful. Happy reading!",
+    description: "Hey! I’m Dagmar Lewis, a Cloud & DevOps Professional. My blog is a mix of hands on tutorials on AWS, Terraform, Docker, observability, and my home lab experiments",
     id: site_url,
     link: site_url,
     image: `${site_url}/logo.png`,

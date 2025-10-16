@@ -10,7 +10,7 @@ export const siteConfig: Site = {
     name: "Dagmar Lewis",
     url: "https://dagmarlewis.com",
   },
-  ogImage: "https://dagmarlewis.com/og.png",
+  ogImage: "https://dagmarlewis.com/logo.png",
   links: {
     x: "https://x.com/dagmarlewis_",
     github: "https://github.com/dagmar-lewis",
