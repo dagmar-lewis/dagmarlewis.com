@@ -50,7 +50,7 @@ export default function Hero() {
                 <h2 className="text-lg text-foreground font-bold underline">
                     Tools & Certifications
                 </h2>
-                <p>
+                
                     {skillsConfig.map((skill) => (
                         <span key={skill.category}>
                             <span className="font-semibold text-primary/90">
@@ -66,8 +66,8 @@ export default function Hero() {
                             </a>
                         </span>
                     ))}
-                </p>
-                <h2 className="text-lg text-foreground mt-6 font-bold underline">
+                
+                <h2 className="text-lg text-foreground font-bold underline">
                     Professional Highlights
                 </h2>
                 {profesHighlights.map((prof) => (
