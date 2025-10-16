@@ -40,7 +40,6 @@ export async function generateMetadata(props: ProjectPageProps): Promise<Metadat
   return {
     title: `${project.title} | ${siteConfig.name} | ${siteConfig.creator.name}`,
     description: project.description,
-    keywords: [...project.tags, ...siteConfig.keywords, project.title],
     openGraph: {
       title: `${project.title} | ${siteConfig.name} | ${siteConfig.creator.name}`,
       description: project.description,

@@ -4,14 +4,13 @@ import { siteConfig } from "@/config/site.config";
 export const metadata: Metadata = {
     title: `Blogs | ${siteConfig.name}`,
     description:
-        "Blogs | Hey! I am Dagmar Lewis, and its my personal blog where I share my learnings, experiences, and thoughts on different topics. I mostly talk about tech, but I don't have any specific niche.  I write about whatever I find interesting. I hope you will find my blogs helpful. Happy reading!",
-    keywords: siteConfig.keywords,
+        'Blogs | Hey! I’m Dagmar Lewis, a Cloud & DevOps Professional. My blog is a mix of hands on tutorials on AWS, Terraform, Docker, observability, and my home lab experiments',
 
     // Open Graph metadata
     openGraph: {
         title: `Blogs | ${siteConfig.name}`,
         description:
-            "Blogs | Hey! I am Dagmar Lewis, and its my personal blog where I share my learnings, experiences, and thoughts on different topics. I mostly talk about tech, but I don't have any specific niche.  I write about whatever I find interesting. I hope you will find my blogs helpful. Happy reading!",
+            'Blogs | Hey! I’m Dagmar Lewis, a Cloud & DevOps Professional. My blog is a mix of hands on tutorials on AWS, Terraform, Docker, observability, and my home lab experiments.Happy reading!',
         url: `${siteConfig.siteUrl}/blogs`,
         siteName: siteConfig.name,
         images: [
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
         site: siteConfig.creator.url,
         title: `Blogs | ${siteConfig.name}`,
         description:
-            "Blogs | Hey! I am Dagmar Lewis, and its my personal blog where I share my learnings, experiences, and thoughts on different topics. I mostly talk about tech, but I don't have any specific niche.  I write about whatever I find interesting. I hope you will find my blogs helpful. Happy reading!",
+            'Blogs | Hey! I’m Dagmar Lewis, a Cloud & DevOps Professional. My blog is a mix of hands on tutorials on AWS, Terraform, Docker, observability, and my home lab experiments.Happy reading!',
         images: {
             url: `${siteConfig.siteUrl}/blog-og.png`,
             width: 1800,

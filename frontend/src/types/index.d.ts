@@ -2,8 +2,8 @@ export type Site = {
   name: string;
   title: string;
   description: string;
-  keywords: string[];
   siteUrl: string;
+  theme: string
   creator: {
     name: string;
     url: string;

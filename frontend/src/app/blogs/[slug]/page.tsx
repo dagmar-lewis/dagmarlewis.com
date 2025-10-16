@@ -35,7 +35,6 @@ export async function generateMetadata(props: BlogPageParams): Promise<Metadata>
   return {
     title: `${blog.title} | ${siteConfig.name} | ${siteConfig.creator.name}`,
     description: blog.description,
-    keywords: [...blog.tags, ...siteConfig.keywords, blog.title],
     openGraph: {
       title: `${blog.title} | ${siteConfig.name} | ${siteConfig.creator.name}`,
       description: blog.description,

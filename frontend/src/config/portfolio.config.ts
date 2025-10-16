@@ -2,7 +2,7 @@ import type { Portfolio } from "@/types";
 
 export const portfolioConfig: Portfolio = {
   name: "Dagmar Lewis",
-  tagline: "",
+  tagline: "Cloud Engineer & DevOps Specialist",
   links: {
     mail: "mailto:dagmarlewis8@gmail.com",
     github: "https://github.com/dagmar-lewis",

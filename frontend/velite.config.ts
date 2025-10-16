@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
 import { LineElement } from "rehype-pretty-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import houston from "shiki/themes/houston.mjs";
+import dark from "shiki/themes/one-dark-pro.mjs";
 
 const computedFields = <T extends { slug: string }>(data: T) => ({
   ...data,
@@ -109,7 +109,7 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          theme: houston,
+          theme: dark,
           keepBackground: false,
           
           onVisitLine(node: LineElement) {

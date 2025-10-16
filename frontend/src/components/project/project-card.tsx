@@ -19,9 +19,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 >
                     <div className="inline-flex items-center gap-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                            <h1 className="text-xl font-semibold font-heading">
+                            <h2 className="text-xl font-semibold font-heading">
                                 {project.title}
-                            </h1>
+                            </h2>
                             <span className="text-xs px-2 py-1 rounded bg-secondary">
                                 {new Date(project.date).toLocaleDateString(
                                     'en-US',

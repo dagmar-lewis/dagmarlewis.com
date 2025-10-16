@@ -2,7 +2,7 @@ export const skillsConfig = [
   {
     category: "Cloud Platform",
     technologies: [
-    "Amazon Web Services"
+    "Amazon Web Services (EC2, S3, VPC, IAM, CloudFormation, etc.)"
     ],
   },
   {
