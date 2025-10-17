@@ -8,7 +8,7 @@ import { navbarConfig } from "@/config/navbar.config";
 export default function Navbar() {
   return (
       <div className="bg sticky bg-background top-0 z-50 w-full pt-6 mb-2">
-          <div className="sticky top-0 inline-flex items-center  text-sm rounded-lg mb-8 nav-container z-50">
+          <div className="sticky top-0 inline-flex items-center   text-sm rounded-lg mb-4 lg:mb-8 nav-container z-50">
               {navbarConfig.map((item, index) => (
                   <NavItem
                       key={index}

@@ -15,6 +15,7 @@ frame-ancestors * data: blob:;
 
 const nextConfig = {
   output: 'standalone',
+  
   async headers() {
     return [
       {

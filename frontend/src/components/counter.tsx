@@ -12,7 +12,6 @@ export default function Counter() {
     useEffect(() => {
         const fetchVisitCount = async () => {
             try {
-                // Replace with your actual API Gateway URL
                 const response = await fetch(
                     `${url}/`,
                     {

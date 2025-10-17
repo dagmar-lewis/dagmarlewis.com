@@ -10,12 +10,12 @@ export default function LandingPageLayout({
   return (
       <main className="relative w-full lg:h-screen p-0 sm:p-5 ">
           <div className="w-full h-full rounded-2xl sm:border  flex flex-wrap justify-between lg:divide-x ">
-              <div className="w-full lg:w-2/5 p-2 md:p-8 lg:h-full lg:overflow-y-scroll">
+              <div className="w-full lg:w-2/5 p-2 md:p-8  lg:h-full lg:overflow-y-scroll">
                   <Hero />
               </div>
               <div
                   id="tab-section"
-                  className="relative w-full mt-0 max-w-4xl mx-auto lg:mt-0 no-scrollbar  md:pl-8 lg:h-full lg:w-3/5 lg:overflow-y-scroll"
+                  className="relative w-full mt-0 mx-auto max-w-4xl lg:mt-0 no-scrollbar md:pl-8 lg:h-full lg:w-3/5 lg:overflow-y-scroll p-2"
               >
                   <Navbar />
                   {children}
