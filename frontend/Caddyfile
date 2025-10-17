@@ -2,7 +2,7 @@ https://dagmarlewis.com {
 	reverse_proxy portfolio:3000
 }
 
-:80 www.dagmarlewis.com {
+:80 54.236.182.201 www.dagmarlewis.com {
 	redir https://dagmarlewis.com{uri}
 }
 
