@@ -9,7 +9,6 @@ export const skillsConfig = [
     category: "IAC",
     technologies: [
       "Terraform",
-      "Ansible"
     ],
   },
 
@@ -42,8 +41,13 @@ export const skillsConfig = [
 {
     category: "Programming Languages",
     technologies: [
-      "Typescript",
-      "Python"
+      "Typescript"
+    ],
+  },
+  {
+    category: "Proxy",
+    technologies: [
+      "Caddy","Nginx"
     ],
   },
 
