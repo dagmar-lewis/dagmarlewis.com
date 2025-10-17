@@ -7,7 +7,7 @@ export default function Counter() {
     const [loading, setLoading] = useState(true)
     const [loaded, setLoaded] = useState(false)
     
-    const url = "https://eyhrme2rzd.execute-api.us-east-1.amazonaws.com/prod"
+    const url = 'https://64pvxr5o3k.execute-api.us-east-1.amazonaws.com/prod'
     
     useEffect(() => {
         const fetchVisitCount = async () => {
