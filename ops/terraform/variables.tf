@@ -1,7 +1,7 @@
 variable "project_name" {
   description = "Project name"
   type        = string
-  default     = "dagmarlewis_portfolio"
+  default     = "dagmarlewis"
 }
 variable "region" {
   description = "Default region for provider"
@@ -12,7 +12,7 @@ variable "region" {
 variable "files_bucket_name" {
   description = "Default region for provider"
   type        = string
-  default     = "dagmarlewis.com-tf-files"
+  default     = "dagmarlewis.com-files"
 }
 
 variable "instance_type" {

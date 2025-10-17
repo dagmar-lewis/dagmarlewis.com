@@ -6,7 +6,7 @@ data "archive_file" "lambda_zip" {
 
 resource "aws_lambda_function" "main" {
   filename         = data.archive_file.lambda_zip.output_path
-  function_name    = "${var.project_name}_function"
+  function_name    = "${var.project_name}-function"
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "index.handler"
   runtime          = "nodejs22.x"

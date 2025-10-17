@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "dagmarlewis.com-tf-state"
+  bucket = "${var.project_name}-tf-state"
 
   tags = {
     Name = "${var.project_name}-tf-state"

@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket  = "dagmarlewis.com-tf-state"
+    bucket  = "dagmarlewis-tf-state"
     key     = "dagmarlewis.com-terraform.tfstate"
     region  = "us-east-1"
     encrypt = true

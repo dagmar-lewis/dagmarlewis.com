@@ -2,6 +2,9 @@ name: Terrafrom Apply
 
 on:
     workflow_dispatch:
+    push:
+        branches: [main]
+        paths: ['ops/terraform/**']
 
 jobs:
     apply:

@@ -27,14 +27,14 @@ resource "aws_instance" "public" {
                   mkdir caddy
                   cd caddy
                   mkdir data config
-                  sudo aws s3 cp s3://dagmarlewis.com-tf-files/Caddyfile .
-                  sudo aws s3 cp s3://dagmarlewis.com-tf-files/docker-compose.yml .
+                  sudo aws s3 cp s3://dagmarlewis.com-files/Caddyfile .
+                  sudo aws s3 cp s3://dagmarlewis.com-files/docker-compose.yml .
                   sudo docker network create proxy-network
                   sudo docker compose up -d
 
                   EOF
   tags = {
-    Name = "${var.project_name}_instance"
+    Name = "${var.project_name}-instance"
   }
 }
 

@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "main" {
-  name          = "${var.project_name}_api"
+  name          = "${var.project_name}-api"
   protocol_type = "HTTP"
   cors_configuration {
     allow_methods = ["GET"]

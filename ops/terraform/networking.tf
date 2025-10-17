@@ -13,7 +13,7 @@ resource "aws_subnet" "public" {
   availability_zone       = "${var.region}a"
 
   tags = {
-    Name = "${var.project_name}_subnet"
+    Name = "${var.project_name}-subnet"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${var.project_name}_internet_gateway"
+    Name = "${var.project_name}-internet_gateway"
   }
 }
 

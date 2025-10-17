@@ -1,15 +1,14 @@
-// index.mjs - Using ES Modules with AWS SDK v3 (Node.js 3.x)
+
 import { DynamoDBClient, GetItemCommand, UpdateItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
 
 // Create DynamoDB client
 const dynamoDB = new DynamoDBClient();
 
 export const handler = async (event) => {
-    const tableName = "dagmarlewis_portfolio_table"; // Your DynamoDB table name
+    const tableName = "dagmarlewis-table"; 
     const ip = event.requestContext?.identity?.sourceIp || 'unknown';
 
     if (ip === 'unknown') {
-        // Just return the current count without incrementing if IP is unknown
         try {
             const result = await dynamoDB.send(new GetItemCommand({
                 TableName: tableName,
@@ -31,12 +30,11 @@ export const handler = async (event) => {
 
     let isNewVisitor = false;
     try {
-        // Try to add the IP address to the table.
-        // This will only succeed if the IP address is not already present.
+        
         await dynamoDB.send(new PutItemCommand({
             TableName: tableName,
             Item: {
-                id: { S: ip }, // Use IP as the primary key
+                id: { S: ip }, 
                 timestamp: { S: new Date().toISOString() }
             },
             ConditionExpression: 'attribute_not_exists(id)'
@@ -44,10 +42,10 @@ export const handler = async (event) => {
         isNewVisitor = true;
     } catch (error) {
         if (error.name === 'ConditionalCheckFailedException') {
-            // This is expected for returning visitors.
+            
             isNewVisitor = false;
         } else {
-            // Some other error occurred.
+            
             console.error('Error checking/adding visitor IP:', error);
             return {
                 statusCode: 500,
