@@ -28,8 +28,7 @@ export const skillsConfig = [
   {
     category: "Scripting",
     technologies: [
-      "Bash",
-      "Python"
+      "Bash"
     ],
   },
   {

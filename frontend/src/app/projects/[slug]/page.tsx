@@ -32,7 +32,7 @@ export async function generateMetadata(props: ProjectPageProps): Promise<Metadat
     return {};
   }
 
-  const ogUrl = new URL(`${siteConfig.siteUrl}${project.image.src}`);
+  const ogUrl = new URL(`${siteConfig.siteUrl}${project.imageDark?.src}`)
   ogUrl.searchParams.set("heading", project.title);
   ogUrl.searchParams.set("type", "Blog Post");
   ogUrl.searchParams.set("mode", "dark");
