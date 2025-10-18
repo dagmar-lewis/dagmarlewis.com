@@ -89,7 +89,7 @@ export default function RootLayout({
                     <PHProvider>{children}</PHProvider>
                 </ThemeProvider>
             </body>
-            <GoogleAnalytics gaId="G-B41C9H6QJ" />
+            <GoogleAnalytics gaId="G-B41C9H6QJ5" />
         </html>
     )
 }
