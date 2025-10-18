@@ -78,6 +78,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <GoogleAnalytics gaId="G-B41C9H6QJ5" />
             <body
                 className={cn(
                     fontHeading.variable,
@@ -85,7 +86,6 @@ export default function RootLayout({
                     GeistMono.variable
                 )}
             >
-                <GoogleAnalytics gaId="G-B41C9H6QJ5" />
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <PHProvider>{children}</PHProvider>
                 </ThemeProvider>
