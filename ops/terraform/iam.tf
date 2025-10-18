@@ -48,6 +48,11 @@ resource "aws_iam_role_policy_attachment" "s3_attachment" {
   policy_arn = aws_iam_policy.s3_access_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 
 resource "aws_iam_role" "lambda_exec_role" {
   name = "lambda_exec_role"
