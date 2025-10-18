@@ -1,13 +1,13 @@
-'use client' // This directive is crucial for client-side rendering
+'use client' 
 
     import { PostHogProvider } from 'posthog-js/react';
     import posthog from 'posthog-js';
 
-    // Initialize PostHog
+    
     if (typeof window !== 'undefined') {
         posthog.init('phc_KQNV8w6qKbrE5qfwyLV9lCQR2bbMB921WQPqB5WXsx9', {
             api_host: 'https://us.i.posthog.com',
-            capture_pageview: false, // Disable automatic pageview capture, as we capture manually
+            defaults: '2025-05-24'
         })
     }
 

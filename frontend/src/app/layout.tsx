@@ -83,9 +83,11 @@ export default function RootLayout({
                     GeistMono.variable
                 )}
             >
-                <ThemeProvider attribute="class" defaultTheme="dark">
-                    <PHProvider>{children}</PHProvider>
-                </ThemeProvider>
+                <PHProvider>
+                    <ThemeProvider attribute="class" defaultTheme="dark">
+                        {children}
+                    </ThemeProvider>
+                </PHProvider>
             </body>
         </html>
     )
