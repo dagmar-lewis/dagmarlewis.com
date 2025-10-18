@@ -9,6 +9,8 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import type { Viewport } from 'next'
 import { PHProvider } from './providers'
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 
 const fontHeading = localFont({
     src: '../../assets/fonts/CalSans-SemiBold.woff2',
@@ -87,6 +89,7 @@ export default function RootLayout({
                     <PHProvider>{children}</PHProvider>
                 </ThemeProvider>
             </body>
+            <GoogleAnalytics gaId="G-B41C9H6QJ" />
         </html>
     )
 }
