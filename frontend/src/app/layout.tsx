@@ -85,11 +85,9 @@ export default function RootLayout({
                     GeistMono.variable
                 )}
             >
+                <GoogleAnalytics gaId="G-B41C9H6QJ5" />
                 <ThemeProvider attribute="class" defaultTheme="dark">
-                    <PHProvider>
-                        {children}
-                        <GoogleAnalytics gaId="G-B41C9H6QJ5" />
-                    </PHProvider>
+                    <PHProvider>{children}</PHProvider>
                 </ThemeProvider>
             </body>
         </html>
