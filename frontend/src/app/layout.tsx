@@ -88,8 +88,8 @@ export default function RootLayout({
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <PHProvider>{children}</PHProvider>
                 </ThemeProvider>
+                <GoogleAnalytics gaId="G-B41C9H6QJ5" />
             </body>
-            <GoogleAnalytics gaId="G-B41C9H6QJ5" />
         </html>
     )
 }
