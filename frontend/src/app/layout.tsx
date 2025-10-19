@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/components/theme/theme-provider'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import type { Viewport } from 'next'
+import { UmamiAnalytics } from '@/components/umamiAnalytics'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -78,7 +79,6 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" suppressHydrationWarning>
-          
             <body
                 className={cn(
                     fontHeading.variable,
@@ -87,9 +87,10 @@ export default function RootLayout({
                 )}
             >
                 <ThemeProvider attribute="class" defaultTheme="dark">
-                   {children}
+                    {children}
                 </ThemeProvider>
                 <GoogleAnalytics gaId="G-B41C9H6QJ5" />
+                <UmamiAnalytics />
             </body>
         </html>
     )
