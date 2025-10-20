@@ -20,7 +20,6 @@ export default function Hero() {
             <div className="flex justify-between items-center mt-6">
                 <h1 className="head-text-sm">{portfolioConfig.name}</h1>
                 <div className="flex items-center gap-2">
-                    <Counter />
                     <Button
                         size="icon"
                         variant="ghost"
@@ -32,8 +31,8 @@ export default function Hero() {
                             <span className="sr-only">rss feed</span>
                         </Link>
                     </Button>
-
-                    {/* <ThemeToggler /> */}
+                    <Counter />
+                    <ThemeToggler />
                 </div>
             </div>
             <h2 className="mt-2 text-lg font-semibold ">
@@ -50,23 +49,23 @@ export default function Hero() {
                 <h2 className="text-lg text-foreground font-bold underline">
                     Tools & Certifications
                 </h2>
-                
-                    {skillsConfig.map((skill) => (
-                        <span key={skill.category}>
-                            <span className="font-semibold text-primary/90">
-                                {skill.category}:
-                            </span>{' '}
-                            <a
-                                href={skill.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={skill.link ? 'underline' : ''}
-                            >
-                                {skill.technologies.join(', ')}
-                            </a>
-                        </span>
-                    ))}
-                
+
+                {skillsConfig.map((skill) => (
+                    <span key={skill.category}>
+                        <span className="font-semibold text-primary/90">
+                            {skill.category}:
+                        </span>{' '}
+                        <a
+                            href={skill.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={skill.link ? 'underline' : ''}
+                        >
+                            {skill.technologies.join(', ')}
+                        </a>
+                    </span>
+                ))}
+
                 <h2 className="text-lg text-foreground font-bold underline">
                     Professional Highlights
                 </h2>
