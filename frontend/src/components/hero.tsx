@@ -44,7 +44,7 @@ export default function Hero() {
                 AWS, turning complex infrastructure into repeatable, automated
                 workflows that accelerate delivery and lower risk.
             </p>
-            {/* <Socials /> */}
+            <Socials />
             <div className="hidden lg:flex flex-col text-sm space-y-2 rounded max-w-2xl text-foreground/70 my-7">
                 <h2 className="text-lg text-foreground font-bold underline">
                     Tools & Certifications
