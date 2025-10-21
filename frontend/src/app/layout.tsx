@@ -17,9 +17,7 @@ const fontHeading = localFont({
     src: '../../assets/fonts/CalSans-SemiBold.woff2',
     variable: '--font-heading',
 })
-export const viewport: Viewport = {
-    themeColor: siteConfig.theme,
-}
+
 export const metadata: Metadata = {
     metadataBase: new URL(siteConfig.siteUrl),
     title: siteConfig.title,
