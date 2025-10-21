@@ -51,7 +51,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                         </p>
                     ))}
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
+                {/* <div className="flex flex-wrap items-center gap-2">
                     {project.links.map((link, i) => (
                         <a
                             key={i}
@@ -69,7 +69,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                             </span>
                         </a>
                     ))}
-                </div>
+                </div> */}
             </div>
             <div className="w-2/5 aspect-video overflow-hidden hover:border duration-100 transition-all transform-gpu ease-in-out rounded-xl hidden tablet:block">
                 <Link href={`/projects/${project.slugAsParams}`}>
