@@ -31,6 +31,11 @@ export const skillsConfig = [
       "Bash"
     ],
   },
+  {category: "Orchestration",
+    technologies: [
+      "AWS ECS"
+    ],
+  },
   {
     category: "Virtualization",
     technologies: [
@@ -44,12 +49,17 @@ export const skillsConfig = [
     ],
   },
   {
-    category: "Proxy",
+    category: "Servers",
     technologies: [
       "Caddy","Nginx"
     ],
   },
-
+{
+    category: "Databases",
+    technologies: [
+      "DynamoDB","RDS","Postgres"
+    ],
+  },
   {
     category: "Observability",
     technologies: [
