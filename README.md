@@ -1,7 +1,8 @@
 # Dagmar Lewis's Personal Portfolio Website
 
 This repository contains the source code for my personal portfolio website, dagmarlewis.com. It's a full-stack application showcasing my projects, blog posts, and skills. The website is designed to be a modern, responsive, and performant platform to share my work and experiences.
-
+# Architecture
+ ![](./ec2_lambda.png)
 ## Live Website
 
 You can visit the live website at [dagmarlewis.com](https://www.dagmarlewis.com).
