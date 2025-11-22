@@ -1,4 +1,3 @@
-"use client"
 import { blogs } from "#site/content";
 import BlogCard from "@/components/blog/blog-card";
 import Hero from "@/components/hero";
